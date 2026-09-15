@@ -121,7 +121,9 @@ services:
       AAS_SIM_RUNNER_URL: http://sim-runner:8000
       # The browser opens these, so they are host URLs, not container names.
       AAS_WEB_UI_URL: ${AAS_WEB_UI_URL:-http://localhost:3000}
-      SIM_INVOKE_MODE: ${SIM_INVOKE_MODE:-direct}
+      # The AAS-native path: the API invokes RunSimulation on the submodel repository and
+      # BaSyx delegates it to sim-runner. SIM_INVOKE_MODE=direct bypasses the AAS.
+      SIM_INVOKE_MODE: ${SIM_INVOKE_MODE:-aas}
     depends_on:
       timescaledb:
         condition: service_healthy

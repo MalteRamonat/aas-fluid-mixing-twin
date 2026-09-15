@@ -232,12 +232,33 @@ def _operations(ctx: BuildContext) -> list[model.SubmodelElement]:
                 "fails on this model; ida is what the published results used (D6).",
             ),
             prop_typed("tolerance", datatypes.Double, ctx.modelica.experiment.tolerance, None),
+            prop_typed(
+                "outputInterval",
+                datatypes.Double,
+                ctx.modelica.experiment.interval,
+                None,
+                description="Spacing of the stored samples, in seconds.",
+            ),
+            prop(
+                "model",
+                "",
+                None,
+                description="Model version to run, as the simulation runner names it "
+                "(ModVA_online_stable or ModVA_faultcapable). Empty means the runner's "
+                "default, which is the fault-capable version.",
+            ),
             prop(
                 "schedule",
                 "EmbeddedDefault",
                 None,
                 description="idShort of an ActuatorSchedules entry, or an inline JSON schedule "
                 "keyed by actuator name.",
+            ),
+            prop(
+                "label",
+                "",
+                None,
+                description="Free-text tag stored with the run, for saying what it was for.",
             ),
             prop(
                 "parameterOverrides",

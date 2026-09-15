@@ -109,6 +109,8 @@ class RunSpec(BaseModel):
             raw["solver"] = values["solver"]
         if "tolerance" in values:
             raw["tolerance"] = float(values["tolerance"])
+        if values.get("outputInterval", "").strip():
+            raw["output_interval"] = float(values["outputInterval"])
         if "schedule" in values:
             text = values["schedule"].strip()
             raw["schedule"] = json.loads(text) if text.startswith("[") else text
@@ -116,6 +118,8 @@ class RunSpec(BaseModel):
             raw["parameter_overrides"] = json.loads(values["parameterOverrides"])
         if values.get("model", "").strip():
             raw["model"] = values["model"].strip()
+        if values.get("label", "").strip():
+            raw["label"] = values["label"].strip()
         return cls(**raw)
 
 
@@ -243,6 +247,11 @@ class JobStore:
         if runner is None:
             raise ValueError(f"unknown model {name!r}; available: {sorted(self.runners)}")
         return name, runner, self.mappings[name]
+
+    def validate(self, spec: RunSpec) -> None:
+        """Raise if this request could not run. Used by the dry-run endpoint and by submit."""
+        self.runner_for(spec.model)
+        self._to_request(spec)
 
     def submit(self, spec: RunSpec) -> dict[str, Any]:
         """Validate, register and enqueue; returns the job as it was *accepted* (``queued``).
@@ -586,6 +595,19 @@ def create_app(jobs: JobStore | None = None) -> FastAPI:
         except (ValueError, SimulationError) as error:
             raise HTTPException(status_code=422, detail=str(error)) from error
         return accepted
+
+    @app.post("/runs/validate", status_code=204)
+    def validate(spec: RunSpec) -> None:
+        """Check a request without running it.
+
+        BaSyx relays only the status code of a failed delegation, not the delegate's message,
+        so a caller coming through the AAS operation would otherwise learn that something was
+        rejected but not what. The API validates here first and reports the reason itself.
+        """
+        try:
+            app.state.jobs.validate(spec)
+        except (ValueError, SimulationError) as error:
+            raise HTTPException(status_code=422, detail=str(error)) from error
 
     @app.get("/runs")
     def list_runs() -> list[dict[str, Any]]:

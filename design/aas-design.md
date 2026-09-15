@@ -649,9 +649,17 @@ graph LR
 1. Dashboard `POST /api/simulations` with a schedule and parameter overrides.
 2. The API invokes the AAS `Operation` `RunSimulation` on the BaSyx submodel repository. BaSyx's
    `invocationDelegation` qualifier forwards the call to `sim-runner`. **This is the AAS-native
-   path and the point of the exercise.** The API can also call `sim-runner` directly
-   (`SIM_INVOKE_MODE=direct`), so a delegation problem degrades to a configuration flag rather
-   than a broken demo.
+   path and the point of the exercise**, and since step 7 it is the default
+   (`SIM_INVOKE_MODE=aas`); `SIM_INVOKE_MODE=direct` calls `sim-runner` straight, so a
+   delegation problem degrades to a configuration flag rather than a broken demo.
+
+   Two properties of the BaSyx implementation shape the design here. It **passes undeclared
+   input variables through**, so an operation can be extended before its consumers are — but an
+   input the *runner* does not parse is dropped just as quietly, which is why the operation's
+   inputs are pinned against the runner's request model by a test. And a failed delegation comes
+   back as `424 OperationDelegationException` carrying the delegate's *status code only*, never
+   its message; so the runner exposes a dry-run endpoint (`POST /runs/validate`) that the API
+   consults before invoking, and the reason a run was refused survives to the dashboard.
 3. `sim-runner`:
    1. resolves the actuator schedule into `ActuatorControl.table[i,j]` using the **correct** column
       order `[time, V201, V202, V203, V206, V205, V204, V209, P201, P202]`;

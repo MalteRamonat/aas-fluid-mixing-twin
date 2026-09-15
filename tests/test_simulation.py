@@ -321,6 +321,24 @@ def test_health_lists_the_models_it_can_run(service: Service) -> None:
     assert body["models"] == ["FakeModel"] and body["model"] == "FakeModel"
 
 
+@pytest.mark.benchmark_data
+def test_a_request_can_be_checked_without_running_it(service: Service) -> None:
+    """The AAS path needs this: BaSyx relays a delegated failure's code, never its reason."""
+    client, runner, _ = service
+    assert client.post("/runs/validate", json={"stop_time": 10}).status_code == 204
+
+    rejected = client.post(
+        "/runs/validate", json={"stop_time": 10, "parameter_overrides": {"V211_opening": 0.3}}
+    )
+    assert rejected.status_code == 422 and "V211_opening" in rejected.json()["detail"]
+    assert client.post("/runs/validate", json={"schedule": "Nope"}).status_code == 422
+    assert client.post("/runs/validate", json={"model": "Nope"}).status_code == 422
+
+    # Checking is not running.
+    assert runner.requests == []
+    assert client.get("/runs").json() == []
+
+
 def test_run_spec_parses_operation_inputs() -> None:
     spec = RunSpec.from_operation_inputs(
         {

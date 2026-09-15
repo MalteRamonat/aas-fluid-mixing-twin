@@ -10,11 +10,10 @@ The plant, the data and the model come from
 Data*, IEEE Access 2025, [10.1109/ACCESS.2025.3592815](https://doi.org/10.1109/ACCESS.2025.3592815)).
 
 > **Status.** The AAS design is complete ([`design/aas-design.md`](design/aas-design.md)) and
-> six of eight implementation steps are done and verified against a running stack: the
+> seven of eight implementation steps are done and verified against a running stack: the
 > benchmark layer, the AAS builders, the BaSyx stack, the time-series store, the simulation
-> runners and the dashboard. Still open: invoking a run through the AAS operation delegation
-> end to end, and driving the simulated plant's control logic from the dashboard
-> (design §12).
+> runners, the dashboard, and running a simulation by invoking an AAS operation. Still open:
+> driving the simulated plant's control logic from the dashboard (design §12).
 
 ## What this is
 
@@ -104,10 +103,14 @@ curl -X POST http://localhost:8001/runs \
 curl http://localhost:8001/runs          # status; a finished run also appears in /api/runs
 ```
 
-The same run can be started the AAS-native way, by invoking the `RunSimulation` operation on
-the `SimulationControl` submodel: BaSyx forwards it to `sim-runner` through the
-`invocationDelegation` qualifier. A simulated run carries the same channel names and units as a
-recorded one, so the two overlay directly.
+That `curl` talks to the runner directly. The dashboard does not: it invokes the
+`RunSimulation` **operation** on the `SimulationControl` submodel, and BaSyx forwards the call
+to `sim-runner` through the `invocationDelegation` qualifier — so a caller needs nothing but
+the AAS to command the twin. `SIM_INVOKE_MODE=direct` switches back to calling the runner
+straight, for when the repository is unavailable.
+
+A simulated run carries the same channel names and units as a recorded one, so the two overlay
+directly in the dashboard.
 
 Two model versions are attached to the `SimulationModels` submodel: the benchmark's own
 `ModVA_online_stable.mo`, and `ModVA_faultcapable.mo`, which adds the hardware the recorded

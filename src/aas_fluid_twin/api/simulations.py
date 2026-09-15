@@ -4,9 +4,10 @@ The AAS-native path is an ``Operation`` invocation on the ``SimulationControl`` 
 which BaSyx forwards to ``sim-runner`` through the ``invocationDelegation`` qualifier
 (design §6.1). ``SIM_INVOKE_MODE`` selects it:
 
-* ``direct`` (default today) — this API posts to ``sim-runner`` itself;
-* ``aas`` — this API invokes ``RunSimulation`` on the submodel repository and lets the
-  delegation carry it, which is what step 7 verifies end to end.
+* ``aas`` (the default) — this API invokes ``RunSimulation`` on the submodel repository and
+  lets the delegation carry it to the runner;
+* ``direct`` — this API posts to ``sim-runner`` itself, which is the fallback when the
+  repository is unavailable or the delegation feature is switched off.
 
 Either way the *form* the dashboard fills in comes from the AAS: parameter set, ranges, units
 and fault roles are read from ``SimulationControl``, never from the local Python model.
@@ -99,10 +100,22 @@ class SimRunner:
         accepted["submitted_via"] = "direct"
         return accepted
 
+    def validate(self, payload: dict[str, Any]) -> None:
+        """Ask the runner whether it would accept this, and relay its reason if it would not."""
+        try:
+            response = self._http.post("/runs/validate", json=payload)
+        except httpx.HTTPError:
+            return  # the invocation below will fail loudly enough on its own
+        if response.status_code == 422:
+            raise HTTPException(status_code=422, detail=response.json().get("detail", "rejected"))
+
     def _submit_through_aas(self, payload: dict[str, Any]) -> dict[str, Any]:
         """Invoke ``RunSimulation`` on the submodel repository; BaSyx delegates it onward."""
         if not self.basyx_url:
             raise HTTPException(status_code=503, detail="SIM_INVOKE_MODE=aas needs AAS_BASYX_URL")
+        # A delegated failure comes back as "the delegate answered 422" and nothing more, so
+        # the reason is fetched from the runner before the command goes through the AAS.
+        self.validate(payload)
         import json
 
         from basyx.aas import model
@@ -115,6 +128,12 @@ class SimRunner:
             prop_typed("stopTime", datatypes.Double, float(payload["stop_time"]), None),
             prop("solver", str(payload.get("solver", "ida")), None),
             prop_typed("tolerance", datatypes.Double, float(payload.get("tolerance", 1e-5)), None),
+            prop_typed(
+                "outputInterval",
+                datatypes.Double,
+                float(payload.get("output_interval", 1.0)),
+                None,
+            ),
             prop(
                 "schedule",
                 (
@@ -128,6 +147,8 @@ class SimRunner:
         ]
         if payload.get("model"):
             inputs.append(prop("model", str(payload["model"]), None))
+        if payload.get("label"):
+            inputs.append(prop("label", str(payload["label"]), None))
         try:
             with BasyxClient(self.basyx_url) as client:
                 result = client.invoke(CONTROL_SUBMODEL_ID, "RunSimulation", inputs)
@@ -143,7 +164,15 @@ class SimRunner:
         run_id = str(values.get("runId", ""))
         if not run_id:
             raise HTTPException(status_code=502, detail=f"AAS invocation returned {values}")
-        return {"run_id": run_id, "status": values.get("status", "queued"), "submitted_via": "aas"}
+        # The operation's output variables are a contract, not a data feed: they carry the run
+        # id and its state, nothing else. The dashboard wants the whole job, so the accepted
+        # run is read back from the runner and only marked with how it was started.
+        try:
+            accepted = self.run(run_id)
+        except HTTPException:
+            accepted = {"run_id": run_id, "status": values.get("status", "queued")}
+        accepted["submitted_via"] = "aas"
+        return accepted
 
 
 def get_runner(request: Request) -> SimRunner:
@@ -197,6 +226,6 @@ def default_runner() -> SimRunner:
     """From the environment: ``AAS_SIM_RUNNER_URL``, ``SIM_INVOKE_MODE``, ``AAS_BASYX_URL``."""
     return SimRunner(
         os.environ.get("AAS_SIM_RUNNER_URL", "http://localhost:8001"),
-        invoke_mode=os.environ.get("SIM_INVOKE_MODE", "direct"),
+        invoke_mode=os.environ.get("SIM_INVOKE_MODE", "aas"),
         basyx_url=os.environ.get("AAS_BASYX_URL"),
     )
