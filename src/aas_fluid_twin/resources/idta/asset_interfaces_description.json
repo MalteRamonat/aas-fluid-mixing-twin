@@ -1,0 +1,3695 @@
+{
+  "key": "asset_interfaces_description",
+  "idta": "IDTA 02017-1-1",
+  "source": "https://github.com/admin-shell-io/submodel-templates/blob/main/published/Asset Interfaces Description/1/1/IDTA 02017-1-1_Template_Asset Interfaces Description.json",
+  "submodel": {
+    "idShort": "AssetInterfacesDescription",
+    "id": "https://admin-shell.io/idta/SubmodelTemplate/AssetInterfacesDescription/1/1",
+    "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/Submodel",
+    "kind": "Template"
+  },
+  "elements": {
+    "InterfaceTemplateForHTTP": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/Interface"
+    },
+    "InterfaceTemplateForHTTP/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/created": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/created",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForHTTP/modified": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/modified",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForHTTP/support": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#supportContact",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/EndpointMetadata"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/base": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#baseURI",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#definesSecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/nosec_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#NoSecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/nosec_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/auto_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#AutoSecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/auto_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/auto_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/basic_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BasicSecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/basic_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/basic_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/basic_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/basic_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/combo_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#ComboSecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/combo_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/combo_sc/oneOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#oneOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/combo_sc/allOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#allOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/combo_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/apikey_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#APIKeySecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/apikey_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/apikey_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/apikey_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/apikey_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/psk_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#PSKSecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/psk_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/psk_sc/identity": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#identity",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/psk_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/digest_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#DigestSecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/digest_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/digest_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/digest_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/digest_sc/qop": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#qop",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/digest_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/bearer_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BearerSecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/bearer_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/bearer_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/bearer_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/bearer_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/bearer_sc/alg": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#alg",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/bearer_sc/format": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#format",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/bearer_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/oauth2_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#OAuth2SecurityScheme"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/oauth2_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/oauth2_sc/token": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#token",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/oauth2_sc/refresh": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#refresh",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/oauth2_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/oauth2_sc/scopes": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#scopes",
+      "typeValueListElement": "SubmodelElement"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/oauth2_sc/flow": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#flow",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/EndpointMetadata/securityDefinitions/oauth2_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/InteractionMetadata"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/PropertyDefinition"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#properties"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasForm"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/href": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#hasTarget",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/subprotocol": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forSubProtocol",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/htv_methodName": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2011/http#methodName",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/htv_headers": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2011/http#headers",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "https://www.w3.org/2011/http#headers"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/htv_headers/htv_header": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2011/http#headers"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/htv_headers/htv_header/htv_fieldName": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2011/http#fieldName",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/properties/property_name/forms/htv_headers/htv_header/htv_fieldValue": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2011/http#fieldValue",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/actions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#ActionAffordance"
+    },
+    "InterfaceTemplateForHTTP/InteractionMetadata/events": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#EventAffordance"
+    },
+    "InterfaceTemplateForHTTP/ExternalDescriptor": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/ExternalDescriptor"
+    },
+    "InterfaceTemplateForHTTP/ExternalDescriptor/fileName": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/externalDescriptorName"
+    },
+    "InterfaceTemplateForMODBUS": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/Interface"
+    },
+    "InterfaceTemplateForMODBUS/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/created": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/created",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForMODBUS/modified": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/modified",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForMODBUS/support": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#supportContact",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/EndpointMetadata"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata/base": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#baseURI",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata/securityDefinitions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#definesSecurityScheme"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata/securityDefinitions/nosec_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#NoSecurityScheme"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata/securityDefinitions/nosec_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata/modv_mostSignificantByte": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasMostSignificantByte",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/EndpointMetadata/modv_mostSignificantWord": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasMostSignificantWord",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/InteractionMetadata"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/PropertyDefinition"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#properties"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasForm"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/href": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#hasTarget",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/subprotocol": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forSubProtocol",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/modv_function": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasFunction",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/modv_entity": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasEntity",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/modv_zeroBasedAddressing": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasZeroBasedAddressingFlag",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/modv_pollingTime": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasPollingTime",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/modv_timeout": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasTimeout",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/modv_type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasPayloadDataType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/modv_mostSignificantByte": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasMostSignificantByte",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/properties/property_name/forms/modv_mostSignificantWord": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/modbus#hasMostSignificantWord",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/actions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#ActionAffordance"
+    },
+    "InterfaceTemplateForMODBUS/InteractionMetadata/events": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#EventAffordance"
+    },
+    "InterfaceTemplateForMODBUS/ExternalDescriptor": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/ExternalDescriptor"
+    },
+    "InterfaceTemplateForMODBUS/ExternalDescriptor/fileName": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/externalDescriptorName"
+    },
+    "InterfaceTemplateForMQTT": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/Interface"
+    },
+    "InterfaceTemplateForMQTT/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/created": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/created",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForMQTT/modified": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/modified",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForMQTT/support": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#supportContact",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/EndpointMetadata"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/base": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#baseURI",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#definesSecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/nosec_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#NoSecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/nosec_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/auto_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#AutoSecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/auto_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/auto_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/basic_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BasicSecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/basic_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/basic_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/basic_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/basic_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/combo_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#ComboSecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/combo_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/combo_sc/oneOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#oneOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/combo_sc/allOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#allOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/combo_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/apikey_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#APIKeySecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/apikey_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/apikey_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/apikey_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/apikey_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/psk_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#PSKSecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/psk_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/psk_sc/identity": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#identity",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/psk_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/digest_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#DigestSecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/digest_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/digest_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/digest_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/digest_sc/qop": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#qop",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/digest_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/bearer_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BearerSecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/bearer_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/bearer_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/bearer_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/bearer_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/bearer_sc/alg": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#alg",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/bearer_sc/format": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#format",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/bearer_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/oauth2_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#OAuth2SecurityScheme"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/oauth2_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/oauth2_sc/token": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#token",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/oauth2_sc/refresh": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#refresh",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/oauth2_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/oauth2_sc/scopes": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#scopes",
+      "typeValueListElement": "SubmodelElement"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/oauth2_sc/flow": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#flow",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/EndpointMetadata/securityDefinitions/oauth2_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/InteractionMetadata"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/PropertyDefinition"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#properties"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/forms": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasForm"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/forms/href": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#hasTarget",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/forms/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/forms/subprotocol": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forSubProtocol",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/forms/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/forms/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/forms/mqv_retain": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/mqtt#hasRetainFlag",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/forms/mqv_controlPacket": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/mqtt#ControlPacket",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/properties/property_name/forms/mqv_qos": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/mqtt#hasQoSFlag",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/actions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#ActionAffordance"
+    },
+    "InterfaceTemplateForMQTT/InteractionMetadata/events": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#EventAffordance"
+    },
+    "InterfaceTemplateForMQTT/ExternalDescriptor": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/ExternalDescriptor"
+    },
+    "InterfaceTemplateForMQTT/ExternalDescriptor/fileName": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/externalDescriptorName"
+    },
+    "InterfaceTemplateForOPCUA": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/Interface"
+    },
+    "InterfaceTemplateForOPCUA/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/created": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/created",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForOPCUA/modified": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/modified",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForOPCUA/support": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#supportContact",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/EndpointMetadata"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/base": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#baseURI",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#definesSecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/nosec_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#NoSecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/nosec_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/auto_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#AutoSecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/auto_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/auto_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/basic_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BasicSecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/basic_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/basic_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/basic_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/basic_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/combo_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#ComboSecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/combo_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/combo_sc/oneOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#oneOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/combo_sc/allOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#allOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/combo_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/apikey_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#APIKeySecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/apikey_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/apikey_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/apikey_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/apikey_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/psk_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#PSKSecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/psk_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/psk_sc/identity": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#identity",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/psk_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/digest_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#DigestSecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/digest_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/digest_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/digest_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/digest_sc/qop": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#qop",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/digest_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/bearer_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BearerSecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/bearer_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/bearer_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/bearer_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/bearer_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/bearer_sc/alg": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#alg",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/bearer_sc/format": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#format",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/bearer_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/oauth2_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#OAuth2SecurityScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/oauth2_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/oauth2_sc/token": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#token",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/oauth2_sc/refresh": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#refresh",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/oauth2_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/oauth2_sc/scopes": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#scopes",
+      "typeValueListElement": "SubmodelElement"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/oauth2_sc/flow": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#flow",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/oauth2_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_channel_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://opcfoundation.org/UA/WoT-Binding/OPCUASecurityChannelScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_channel_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_channel_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_channel_sc/uav_securityMode": {
+      "modelType": "Property",
+      "semanticId": "http://opcfoundation.org/UA/WoT-Binding/securityMode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_channel_sc/uav_securityPolicy": {
+      "modelType": "Property",
+      "semanticId": "http://opcfoundation.org/UA/WoT-Binding/securityPolicy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_authentication_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://opcfoundation.org/UA/WoT-Binding/OPCUASecurityAuthenticationScheme"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_authentication_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_authentication_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_authentication_sc/uav_userIdentityToken": {
+      "modelType": "Property",
+      "semanticId": "http://opcfoundation.org/UA/WoT-Binding/userIdentityToken",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/EndpointMetadata/securityDefinitions/opcua_authentication_sc/uav_issueToken": {
+      "modelType": "ReferenceElement",
+      "semanticId": "http://opcfoundation.org/UA/WoT-Binding/issueToken"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/InteractionMetadata"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/PropertyDefinition"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#properties"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/forms": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasForm"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/forms/href": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#hasTarget",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/forms/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/forms/subprotocol": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forSubProtocol",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/forms/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/forms/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/properties/property_name/forms/uav_browsePath": {
+      "modelType": "Property",
+      "semanticId": "http://opcfoundation.org/UA/WoT-Binding/browsePath",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/actions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#ActionAffordance"
+    },
+    "InterfaceTemplateForOPCUA/InteractionMetadata/events": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#EventAffordance"
+    },
+    "InterfaceTemplateForOPCUA/ExternalDescriptor": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/ExternalDescriptor"
+    },
+    "InterfaceTemplateForOPCUA/ExternalDescriptor/fileName": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/externalDescriptorName"
+    },
+    "InterfaceTemplateForBacnet": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/Interface"
+    },
+    "InterfaceTemplateForBacnet/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/created": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/created",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForBacnet/modified": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/modified",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForBacnet/support": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#supportContact",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/EndpointMetadata"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/base": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#baseURI",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#definesSecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/nosec_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#NoSecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/nosec_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/auto_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#AutoSecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/auto_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/auto_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/basic_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BasicSecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/basic_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/basic_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/basic_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/basic_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/combo_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#ComboSecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/combo_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/combo_sc/oneOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#oneOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/combo_sc/allOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#allOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/combo_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/apikey_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#APIKeySecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/apikey_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/apikey_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/apikey_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/apikey_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/psk_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#PSKSecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/psk_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/psk_sc/identity": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#identity",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/psk_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/digest_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#DigestSecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/digest_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/digest_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/digest_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/digest_sc/qop": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#qop",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/digest_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/bearer_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BearerSecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/bearer_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/bearer_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/bearer_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/bearer_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/bearer_sc/alg": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#alg",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/bearer_sc/format": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#format",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/bearer_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/oauth2_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#OAuth2SecurityScheme"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/oauth2_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/oauth2_sc/token": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#token",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/oauth2_sc/refresh": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#refresh",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/oauth2_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/oauth2_sc/scopes": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#scopes",
+      "typeValueListElement": "SubmodelElement"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/oauth2_sc/flow": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#flow",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/EndpointMetadata/securityDefinitions/oauth2_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/InteractionMetadata"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/PropertyDefinition"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#properties"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasUriTemplateSchema"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/uriVariables/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasForm"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/href": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#hasTarget",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/subprotocol": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forSubProtocol",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_useService": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#usesService",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasDataType"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_isISO8601": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#isIso8601",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasBinaryRepresentation": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasBinaryRepresentation",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasMember"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_isISO8601": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#isIso8601",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasBinaryRepresentation": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasBinaryRepresentation",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasMember"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_isISO8601": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#isIso8601",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasBinaryRepresentation": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasBinaryRepresentation",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasMember": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasMember"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasNamedMember": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasNamedMember",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "http://www.w3.org/2022/bacnet#NamedMember"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasNamedMember/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#NamedMember"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasNamedMember/properties/bacv_hasFieldName": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasfieldName",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasNamedMember/properties/bacv_hasContextTag": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasContextTag",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasNamedMember/properties/bacv_hasDataType": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasDataType"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasValueMap": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasValueMap",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "http://www.w3.org/2022/bacnet#hasMapEntry"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasValueMap/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasMapEntry"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasValueMap/properties/bacv_hasLogicalVal": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasLogicalVal",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasMember/bacv_hasValueMap/properties/bacv_hasProtocolVal": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasProtocolVal",
+      "valueType": "xs:integer"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasNamedMember": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasNamedMember",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "http://www.w3.org/2022/bacnet#NamedMember"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasNamedMember/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#NamedMember"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasNamedMember/properties/bacv_hasFieldName": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasfieldName",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasNamedMember/properties/bacv_hasContextTag": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasContextTag",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasNamedMember/properties/bacv_hasDataType": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasDataType"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasValueMap": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasValueMap",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "http://www.w3.org/2022/bacnet#hasMapEntry"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasValueMap/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasMapEntry"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasValueMap/properties/bacv_hasLogicalVal": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasLogicalVal",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasMember/bacv_hasValueMap/properties/bacv_hasProtocolVal": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasProtocolVal",
+      "valueType": "xs:integer"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasNamedMember": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasNamedMember",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "http://www.w3.org/2022/bacnet#NamedMember"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasNamedMember/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#NamedMember"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasNamedMember/properties/bacv_hasFieldName": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasfieldName",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasNamedMember/properties/bacv_hasContextTag": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasContextTag",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasNamedMember/properties/bacv_hasDataType": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasDataType"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasValueMap": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasValueMap",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "http://www.w3.org/2022/bacnet#hasMapEntry"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasValueMap/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasMapEntry"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasValueMap/properties/bacv_hasLogicalVal": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasLogicalVal",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/properties/property_name/forms/bacv_hasDataType/bacv_hasValueMap/properties/bacv_hasProtocolVal": {
+      "modelType": "Property",
+      "semanticId": "http://www.w3.org/2022/bacnet#hasProtocolVal",
+      "valueType": "xs:integer"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/actions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#ActionAffordance"
+    },
+    "InterfaceTemplateForBacnet/InteractionMetadata/events": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#EventAffordance"
+    },
+    "InterfaceTemplateForBacnet/ExternalDescriptor": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/ExternalDescriptor"
+    },
+    "InterfaceTemplateForBacnet/ExternalDescriptor/fileName": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/externalDescriptorName"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/Interface"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/created": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/created",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/modified": {
+      "modelType": "Property",
+      "semanticId": "http://purl.org/dc/terms/modified",
+      "valueType": "xs:dateTime"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/support": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#supportContact",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/EndpointMetadata"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/base": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#baseURI",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#definesSecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/nosec_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#NoSecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/nosec_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/auto_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#AutoSecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/auto_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/auto_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/basic_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BasicSecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/basic_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/basic_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/basic_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/basic_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/combo_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#ComboSecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/combo_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/combo_sc/oneOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#oneOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/combo_sc/allOf": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#allOf",
+      "typeValueListElement": "SubmodelElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/security#allOf"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/combo_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/apikey_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#APIKeySecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/apikey_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/apikey_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/apikey_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/apikey_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/psk_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#PSKSecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/psk_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/psk_sc/identity": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#identity",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/psk_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/digest_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#DigestSecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/digest_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/digest_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/digest_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/digest_sc/qop": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#qop",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/digest_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/bearer_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#BearerSecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/bearer_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/bearer_sc/name": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#name",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/bearer_sc/in": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#in",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/bearer_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/bearer_sc/alg": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#alg",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/bearer_sc/format": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#format",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/bearer_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/oauth2_sc": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/security#OAuth2SecurityScheme"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/oauth2_sc/scheme": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#SecurityScheme",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/oauth2_sc/token": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#token",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/oauth2_sc/refresh": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#refresh",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/oauth2_sc/authorization": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#authorization",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/oauth2_sc/scopes": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/security#scopes",
+      "typeValueListElement": "SubmodelElement"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/oauth2_sc/flow": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#flow",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/EndpointMetadata/securityDefinitions/oauth2_sc/proxy": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/security#proxy",
+      "valueType": "xs:anyURI"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/InteractionMetadata"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#PropertyAffordance"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/PropertyDefinition"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#properties"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/key": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/key",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#items"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/type": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/title": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#title",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/observable": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/td#isObservable",
+      "valueType": "xs:boolean"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/const": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#const",
+      "valueType": "xs:int"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/enum": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#enum",
+      "typeValueListElement": "Property"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/default": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#default",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/unit": {
+      "modelType": "Property",
+      "semanticId": "https://schema.org/unitCode",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/min_max": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/minMaxRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/lengthRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/lengthRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/items/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/itemsRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/itemsRange"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/properties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/json-schema#propertyName"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/valueSemantics": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/valueSemantics"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasForm"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/href": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#hasTarget",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/contentType": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forContentType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/subprotocol": {
+      "modelType": "Property",
+      "semanticId": "https://www.w3.org/2019/wot/hypermedia#forSubProtocol",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/security": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration",
+      "typeValueListElement": "ReferenceElement",
+      "semanticIdListElement": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/security/definesSecurityScheme": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://www.w3.org/2019/wot/td#hasSecurityConfiguration"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_method": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/hasMethod",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_accessRigths": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/hasAccessRights",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_type": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/hasPayloadDataType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_byteOffset": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/byteOffset",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_byteLength": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/byteLength",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_bitOffset": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/bitOffset",
+      "valueType": "xs:integer"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_bitLength": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/bitLength",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_enumeratedValues": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/hasEnumeratedValues",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "http://www.w3.org/2022/wot/iolink#EnumeratedValue"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_enumeratedValues/iolv_enumeratedValue": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/wot/iolink#EnumeratedValue"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_enumeratedValues/iolv_enumeratedValue/iolv_encodedPayload": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/encodedPayload",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_enumeratedValues/iolv_enumeratedValue/iolv_decodedPayload": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/decodedPayload",
+      "valueType": "xs:integer"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/hasPayloadMapping",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "http://www.w3.org/2022/wot/iolink#PayloadMapping"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/wot/iolink#PayloadMapping"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_referenceToProperty": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/referenceToProperty"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_type": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/hasPayloadDataType",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_byteOffset": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/byteOffset",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_byteLength": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/byteLength",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_bitOffset": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/bitOffset",
+      "valueType": "xs:integer"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_bitLength": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/bitLength",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_enumeratedValues": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/hasEnumeratedValues",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "http://www.w3.org/2022/wot/iolink#EnumeratedValue"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_enumeratedValues/iolv_enumeratedValue": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "http://www.w3.org/2022/wot/iolink#EnumeratedValue"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_enumeratedValues/iolv_enumeratedValue/iolv_encodedPayload": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/encodedPayload",
+      "valueType": "xs:string"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/properties/property_name/forms/iolv_payloadMapping/iolv_payloadMappingElement/iolv_enumeratedValues/iolv_enumeratedValue/iolv_decodedPayload": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/1/IO-Link/decodedPayload",
+      "valueType": "xs:integer"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/actions": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#ActionAffordance"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/InteractionMetadata/events": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://www.w3.org/2019/wot/td#EventAffordance"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/ExternalDescriptor": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/ExternalDescriptor"
+    },
+    "InterfaceTemplateForIOLINK_OVER_PROFINET_REST/ExternalDescriptor/fileName": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/AssetInterfacesDescription/1/0/externalDescriptorName"
+    }
+  }
+}

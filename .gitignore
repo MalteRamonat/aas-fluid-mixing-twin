@@ -1,0 +1,27 @@
+# Benchmark data is fetched, never vendored — see docs/benchmark-deviations.md C1
+/data/benchmark/
+
+# Build artefacts of the simulation model
+/artifacts/*.fmu
+/artifacts/build/
+
+# Generated AAS output
+/out/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

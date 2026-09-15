@@ -1,0 +1,348 @@
+{
+  "key": "technical_data",
+  "idta": "IDTA 02003-2-0",
+  "source": "https://github.com/admin-shell-io/submodel-templates/blob/main/published/Technical_Data/2/0/1/IDTA 02003_2-0-1_Template_TechnicalData_forAASMetamodelV3.1.json",
+  "submodel": {
+    "idShort": "TechnicalData",
+    "id": "https://admin-shell.io/idta/SubmodelTemplate/TechnicalData/2/0",
+    "semanticId": "0173-1#01-AHX837#002",
+    "kind": "Template"
+  },
+  "elements": {
+    "GeneralInformation": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABK161#002/0173-1#01-AHX838#002",
+      "cardinality": "One"
+    },
+    "GeneralInformation/ManufacturerName": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO677#004",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "GeneralInformation/CompanyLogo": {
+      "modelType": "File",
+      "semanticId": "0173-1#02-ABI776#002",
+      "cardinality": "ZeroToOne"
+    },
+    "GeneralInformation/ManufacturerProductDesignation": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0173-1#02-AAW338#003",
+      "cardinality": "One"
+    },
+    "GeneralInformation/ManufacturerArticleNumber": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO676#005",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "GeneralInformation/ManufacturerOrderCode": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO227#004",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "GeneralInformation/ProductImages": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABM220#001",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "0173-1#02-ABM220#001/0173-1#01-AHY911#001",
+      "cardinality": "ZeroToOne"
+    },
+    "GeneralInformation/ProductImages/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABM220#001/0173-1#01-AHY911#001"
+    },
+    "GeneralInformation/ProductImages/[]/ImageFile": {
+      "modelType": "File",
+      "semanticId": "0173-1#02-ABK291#002",
+      "cardinality": "One"
+    },
+    "GeneralInformation/ProductImages/[]/ImageNote": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0173-1#02-ABL423#001",
+      "cardinality": "ZeroToOne"
+    },
+    "ProductClassifications": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABK162#002",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "0173-1#02-ABK162#002/0173-1#01-AHX839#002",
+      "cardinality": "ZeroToOne"
+    },
+    "ProductClassifications/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABK162#002/0173-1#01-AHX839#002"
+    },
+    "ProductClassifications/[]/ClassificationSystem": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABL424#001",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "ProductClassifications/[]/ClassificationSystemVersion": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAR710#003",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "ProductClassifications/[]/ClassificationSystemUrl": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/IDTA/TechnicalData/ProductClassifications/ProduktClassification/ClassificationSystemUrl/2/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "ProductClassifications/[]/ProductClassId": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABG776#003",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "ProductClassifications/[]/ProductClassCodedName": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABK128#002",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "ProductClassifications/[]/ProductClassName": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0173-1#02-ABK273#002",
+      "cardinality": "ZeroToOne"
+    },
+    "ProductClassifications/[]/ReferenceToTechnicalPropertyArea": {
+      "modelType": "ReferenceElement",
+      "semanticId": "0173-1#02-ABL358#002",
+      "cardinality": "ZeroToOne"
+    },
+    "TechnicalPropertyAreas": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABK163#002",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "0173-1#02-ABL358#002/0173-1#01-AHX773#002",
+      "cardinality": "ZeroToOne"
+    },
+    "TechnicalPropertyAreas/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABL358#002/0173-1#01-AHX773#002"
+    },
+    "TechnicalPropertyAreas/[]/Section": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/Section/Section": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/Section/ArbitrarySMC": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/Section/ArbitrarySML": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "typeValueListElement": "SubmodelElement",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/Section/ArbitraryProperty": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/Section/ArbitraryMLP": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/Section/ArbitraryRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitrarySMC": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitrarySMC/Section": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitrarySMC/ArbitrarySMC": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitrarySMC/ArbitrarySML": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "typeValueListElement": "SubmodelElement",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitrarySMC/ArbitraryProperty": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitrarySMC/ArbitraryMLP": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitrarySMC/ArbitraryRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitrarySML": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "typeValueListElement": "SubmodelElement",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitraryProperty": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitraryMLP": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "TechnicalPropertyAreas/[]/ArbitraryRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "FurtherInformation": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABK164#002",
+      "cardinality": "ZeroToOne"
+    },
+    "FurtherInformation/TextStatement": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0173-1#02-ABK134#002",
+      "cardinality": "ZeroToMany"
+    },
+    "FurtherInformation/ValidDate": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABL775#001",
+      "valueType": "xs:date",
+      "cardinality": "One"
+    },
+    "SpecificDescriptions": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABM221#001",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "0173-1#02-ABM221#001/0173-1#01-AHY912#001",
+      "cardinality": "ZeroToOne"
+    },
+    "SpecificDescriptions/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABM221#001/0173-1#01-AHY912#001"
+    },
+    "SpecificDescriptions/[]/Section": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/Section/Section": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/Section/ArbitrarySMC": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/Section/ArbitrarySML": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "typeValueListElement": "SubmodelElement",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/Section/ArbitraryProperty": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/Section/ArbitraryMLP": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/Section/ArbitraryRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitrarySMC": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitrarySMC/Section": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitrarySMC/ArbitrarySMC": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitrarySMC/ArbitrarySML": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "typeValueListElement": "SubmodelElement",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitrarySMC/ArbitraryProperty": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitrarySMC/ArbitraryMLP": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitrarySMC/ArbitraryRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitrarySML": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "typeValueListElement": "SubmodelElement",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitraryProperty": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitraryMLP": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    },
+    "SpecificDescriptions/[]/ArbitraryRange": {
+      "modelType": "Range",
+      "semanticId": "https://admin-shell.io/SMT/General/Arbitrary",
+      "cardinality": "ZeroToMany"
+    }
+  }
+}

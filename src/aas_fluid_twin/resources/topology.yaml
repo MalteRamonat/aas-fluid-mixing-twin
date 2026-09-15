@@ -1,0 +1,203 @@
+# ModVA plant topology.
+#
+# Reconstructed from three sources that cross-check each other; see docs/plant-topology.md.
+#   - documents/PID-Diagram.pdf (rasterised — its text is outlined vector paths)
+#   - simulation/ModVA_online_stable.mo, the connect(...) equations
+#   - the recorded data (valve -> tank assignment settled empirically over all normal runs)
+#
+# `shell: true` mints an Instance AAS for the item. Everything else becomes a BoM Entity only.
+# Geometry comes from the Modelica parameter block unless noted.
+
+sections:
+  - id: DosingSection
+    display_name: Dosing section
+    members: [B201, B202, B203, V201, V202, V203, V204, V205, V206, P201]
+  - id: MixingSection
+    display_name: Mixing section
+    members: [B204, R201, P202, V207, V212]
+  - id: DischargeSection
+    display_name: Discharge and supply
+    members: [V208, V209, V210, V211]
+  - id: ControlSection
+    display_name: Control
+    members: [PLC]
+
+components:
+
+  # ---- vessels -------------------------------------------------------------
+  B201: &dosing_tank
+    kind: tank
+    shell: true
+    display_name: Dosing tank B201
+    cross_section: {value: 0.01431355, unit: m2}
+    height: {value: 0.22, unit: m}
+    nominal_volume: {value: 3.149, unit: L}
+    port_diameter: {value: 0.011, unit: m}
+    instruments: [LI211, PI251, LA-201, LA+210]
+  B202:
+    <<: *dosing_tank
+    display_name: Dosing tank B202
+    instruments: [LI212, PI252, LA-202, LA+220]
+  B203:
+    <<: *dosing_tank
+    display_name: Dosing tank B203
+    instruments: [LI213, PI253, LA-203, LA+230]
+  B204:
+    kind: tank
+    shell: true
+    display_name: Mixing tank B204
+    cross_section: {value: 0.0324, unit: m2}
+    height: {value: 0.35, unit: m}
+    nominal_volume: {value: 11.34, unit: L}
+    port_diameter: {value: 0.011, unit: m}
+    instruments: [LI214, PI254, TI262, LA-204, LA-205, LA+240]
+
+  # ---- pumps and stirrer ---------------------------------------------------
+  P201:
+    kind: pump
+    shell: true
+    display_name: Dosing pump P201
+    function: Suction manifold -> B204
+    nominal_speed: {value: 166.43, unit: 1/s}
+    displaced_volume: {value: 4.398128e-5, unit: m3}
+    flow_characteristic:                       # quadratic, three (V_flow, head) points
+      - {v_flow: 1.22e-4, head: 2.045}
+      - {v_flow: 2.00e-4, head: 1.534}
+      - {v_flow: 2.50e-4, head: 1.022}
+    instruments: [FI271, TI261]
+  P202:
+    kind: pump
+    shell: true
+    display_name: Discharge pump P202
+    function: B204 -> return ring / drain
+    nominal_speed: {value: 166.43, unit: 1/s}
+    displaced_volume: {value: 4.398128e-5, unit: m3}
+    flow_characteristic:
+      - {v_flow: 1.22e-4, head: 2.045}
+      - {v_flow: 2.00e-4, head: 1.534}
+      - {v_flow: 2.50e-4, head: 1.022}
+    instruments: [FI272]
+  R201:
+    kind: mixer
+    shell: true
+    display_name: Stirrer R201 in B204
+    note: Off in nominal operation. Switched on deliberately in dataset_44 (stirring_error).
+
+  # ---- actuated valves -----------------------------------------------------
+  V201: &outlet_valve
+    kind: valve
+    shell: true
+    display_name: Tank outlet valve V201
+    actuation: pneumatic
+    valve_type: gate
+    nominal_pressure_drop: {value: 20.0, unit: Pa}
+    nominal_mass_flow: {value: 0.1, unit: kg/s}
+  V202: {<<: *outlet_valve, display_name: Tank outlet valve V202}
+  V203: {<<: *outlet_valve, display_name: Tank outlet valve V203}
+  V204: &inlet_valve
+    kind: valve
+    shell: true
+    display_name: Tank inlet valve V204
+    actuation: pneumatic
+    valve_type: pinch
+    nominal_pressure_drop: {value: 20.0, unit: Pa}
+    nominal_mass_flow: {value: 0.1, unit: kg/s}
+  V205: {<<: *inlet_valve, display_name: Tank inlet valve V205}
+  V206: {<<: *inlet_valve, display_name: Tank inlet valve V206}
+  V209:
+    kind: valve
+    shell: true
+    display_name: Drain valve V209
+    actuation: solenoid
+    valve_type: 2/2-way direct-acting
+    nominal_pressure_drop: {value: 20.0, unit: Pa}
+    nominal_mass_flow: {value: 0.1, unit: kg/s}
+
+  # ---- manual valves (no OPC UA node, no shell) ----------------------------
+  V207:
+    kind: valve
+    shell: false
+    display_name: Manual valve V207
+    actuation: manual
+    note: >-
+      B204 outlet. Pinned open in the Modelica model (V207.opening = 1) and drawn in the P&ID.
+  V208:
+    kind: valve
+    shell: false
+    display_name: Manual supply valve V208
+    actuation: manual
+    note: External supply X201 -> B201. Not in the Modelica model.
+  V210:
+    kind: valve
+    shell: false
+    display_name: Manual crossover valve V210
+    actuation: manual
+    note: >-
+      Tee3 <-> Tee5. Opening it levels B204 against the dosing tanks hydrostatically when
+      V201/V202/V203 open. Fault injection point for reconfiguration sub-scenario
+      B204_crossover_via_V210. The PLC has a V210_auf prompt output but does not actuate it.
+  V211:
+    kind: valve
+    shell: false
+    display_name: Manual leak valve V211
+    actuation: manual
+    note: >-
+      Tee4 -> X203, downstream of P201 and FI271 and upstream of B204. Fault injection point
+      for leakage; the leaked flow is measured by FI271 but never reaches B204.
+  V212:
+    kind: valve
+    shell: false
+    display_name: Manual throttle valve V212
+    actuation: manual
+    note: >-
+      Between B204 and P202. Fault injection point for clogging. Exists solely for that
+      purpose and is NOT drawn in the P&ID.
+
+  # ---- control -------------------------------------------------------------
+  PLC:
+    kind: controller
+    shell: false
+    display_name: WAGO 750-8212 PFC200 G2 2ETH RS
+
+# External connection points
+boundaries:
+  X201: {display_name: External supply, direction: inlet, via: V208, into: B201}
+  X202: {display_name: External drain, direction: outlet, via: V209, from: Tee6}
+  X203: {display_name: Leak discharge, direction: outlet, via: V211, from: Tee4}
+
+# Junctions in the P&ID. The Modelica model merges the suction manifold into Tee1/Tee2 and
+# has no Tee3/Tee4/Tee5 — see docs/plant-topology.md section 5.
+junctions: [Tee1, Tee2, Tee3, Tee4, Tee5, Tee6, Tee7, Tee8]
+
+# Directed fluid connections, P&ID naming. `via` is the valve or instrument in the segment.
+connections:
+  - {from: X201, to: B201,  via: V208, pipe: Pipe_X201_V208 / Pipe_V208_B201}
+  - {from: B201, to: Tee1,  via: V201, pipe: Pipe_B201_V201 / Pipe_V201_Tee1}
+  - {from: B202, to: Tee2,  via: V202, pipe: Pipe_B202_V202 / Pipe_V202_Tee2}
+  - {from: B203, to: Tee3,  via: V203, pipe: Pipe_B203_V203 / Pipe_V203_Tee3}
+  - {from: Tee2, to: Tee1,  pipe: Pipe_Tee2_Tee1}
+  - {from: Tee2, to: Tee3,  pipe: Pipe_Tee2_Tee3}
+  - {from: Tee1, to: P201,  pipe: Pipe_Tee1_P201}
+  - {from: P201, to: Tee4,  via: FI271, pipe: Pipe_P201_FI271 / Pipe_FI271_Tee4}
+  - {from: Tee4, to: B204,  pipe: Pipe_Tee4_B204}
+  - {from: Tee4, to: X203,  via: V211, pipe: Pipe_Tee4_V211 / Pipe_V211_X203}
+  - {from: B204, to: Tee5,  via: V207, pipe: Pipe_B204_V207 / Pipe_V207_Tee5}
+  - {from: Tee3, to: Tee5,  via: V210, pipe: Pipe_V210_Tee3 / Pipe_V210_Tee5}
+  - {from: Tee5, to: P202,  via: V212, pipe: Pipe_Tee5_P202}
+  - {from: P202, to: Tee6,  pipe: Pipe_P202_Tee6}
+  - {from: Tee6, to: X202,  via: V209, pipe: Pipe_Tee6_V209 / Pipe_V209_X202}
+  - {from: Tee6, to: Tee8,  via: FI272, pipe: Pipe_Tee6_FI272 / Pipe_FI272_Tee8}
+  - {from: Tee8, to: Tee7,  pipe: Pipe_Tee7_Tee8}
+  - {from: Tee7, to: B201,  via: V204, pipe: Pipe_Tee7_V204 / Pipe_V204_B201}
+  - {from: Tee8, to: B202,  via: V205, pipe: Pipe_Tee8_V205 / Pipe_V205_B202}
+  - {from: Tee8, to: B203,  via: V206, pipe: Pipe_Tee8_V206 / Pipe_V206_B203}
+
+# Which tank each actuated valve moves liquid into or out of. Settled empirically from the
+# recorded data over all normal runs; see docs/plant-topology.md section 2.
+valve_tank_roles:
+  V201: {drains: B201, fills: B204}
+  V202: {drains: B202, fills: B204}
+  V203: {drains: B203, fills: B204}
+  V204: {drains: B204, fills: B201}
+  V205: {drains: B204, fills: B202}
+  V206: {drains: B204, fills: B203}

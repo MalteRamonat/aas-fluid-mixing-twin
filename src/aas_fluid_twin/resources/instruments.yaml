@@ -1,0 +1,151 @@
+# Instrument type data.
+#
+# Provenance is deliberately explicit: everything here comes either from a vendor
+# datasheet in [BM]/documents/Process_Equipment/ or from the plant author. Nothing is
+# inferred from the recorded data — an observed process window is not a measuring span.
+#
+# `applies_to` lists the Sensor_IDs from Simulation_Variable_Mapping.xlsx.
+
+families:
+
+  level_ultrasonic:
+    applies_to: [LI211, LI212, LI213, LI214]
+    manufacturer: Pepperl+Fuchs
+    product_designation: Ultrasonic sensor
+    product_type: UC1000-18GS-IUEP-IO-V15
+    source: documents/Process_Equipment/Sensors/Level_Sensor.pdf
+    measuring_span: {min: 70.0, max: 1000.0, unit: mm}
+    settable_span: {min: 90.0, max: 1000.0, unit: mm}
+    blind_zone: {min: 0.0, max: 70.0, unit: mm}
+    interface: IO-Link
+    quality: good
+
+  pressure:
+    applies_to: [PI251, PI252, PI253, PI254]
+    manufacturer: BD Sensors GmbH
+    product_designation: OEM pressure transmitter, ceramic sensor
+    product_type: 26.600 G
+    source: documents/Process_Equipment/Sensors/Pressure_Sensor.pdf
+    measuring_span: {min: 0.0, max: 1.0, unit: bar}          # confirmed by the plant author
+    accuracy: "<= +/- 0.5 % FSO per IEC 60770"
+    long_term_stability: "<= +/- 0.3 % FSO per year"
+    quality: unreliable
+    quality_reason: >-
+      Static pressure only — the transmitter does not compensate for dynamic pressure, so the
+      reading is wrong whenever fluid moves past the sensor. The plant author does not use
+      these channels. Stated directly by the plant author, 2026-09-11.
+
+  temperature:
+    applies_to: [TI261, TI262]
+    manufacturer: ifm electronic gmbh
+    product_designation: Temperature sensor, Pt100 class A
+    product_type: TM4411
+    order_code: TM-050KFBR12-/US/
+    source: documents/Process_Equipment/Sensors/Temperature_Sensor.pdf
+    measuring_span: {min: -40.0, max: 150.0, unit: "Cel"}
+    accuracy: "+/- (0.15 K + 0.002 x |t|)"
+    process_connection: G 1/2
+    pressure_rating: {value: 250.0, unit: bar}
+    quality: good
+
+  flow:
+    applies_to: [FI271, FI272]
+    manufacturer: ifm electronic gmbh
+    product_designation: Magnetic-inductive flow sensor
+    product_type: SM6000
+    order_code: SMR12GGXFRKG/US-100
+    source: documents/Process_Equipment/Sensors/Flow_Sensor.pdf
+    measuring_span: {min: 0.1, max: 25.0, unit: L/min}
+    process_connection: G 1/2 DN15
+    medium_temperature: {min: -10.0, max: 70.0, unit: "Cel"}
+    pressure_rating: {value: 16.0, unit: bar}
+    quality: good
+
+  level_switch:
+    applies_to: [LA-201, LA-202, LA-203, LA-204, LA-205, LA+210, LA+220, LA+230, LA+240]
+    product_designation: Binary level switch
+    quality: good
+
+  valve_gate:
+    applies_to: [V201, V202, V203]
+    manufacturer: Festo
+    product_designation: Gate valve, pneumatically actuated
+    pilot_manufacturer: Festo
+    pilot_product_type: NVF3-MOH-5/2K-1/4-EX
+    pilot_note: NAMUR pilot solenoid per VDI/VDE 3845, 5/2-way, 2...10 bar
+    source: documents/Process_Equipment/Valves/V201_V202_V203.PDF
+    quality: good
+
+  valve_pinch:
+    applies_to: [V204, V205, V206]
+    manufacturer: Festo
+    product_designation: Pinch valve, pneumatically actuated
+    product_type: VZQA-C-M22U
+    pilot_manufacturer: Festo
+    pilot_product_type: NVF3-MOH-5/2K-1/4-EX
+    source: documents/Process_Equipment/Valves/V204_V205_V206.pdf
+    quality: good
+
+  valve_solenoid:
+    applies_to: [V209]
+    manufacturer: Bürkert
+    product_designation: 2/2-way direct-acting solenoid valve
+    product_type: "6013"
+    source: documents/Process_Equipment/Valves/V209.pdf
+    quality: good
+
+  pump:
+    applies_to: [P201, P202]
+    product_designation: Heavy duty, magnetic driven, seal-less circulating pump
+    product_type: CM10P7-1 / CM30P7-1
+    source: documents/Process_Equipment/Pumps/P201 + P202 Pumps.pdf
+    quality: good
+
+  mixer:
+    applies_to: [R201]
+    product_designation: Stirrer in B204
+    note: Off in nominal operation. Not represented in the Modelica model.
+    quality: good
+
+# Quality of *derived* channels — values the PLC computes rather than reads.
+# A derived channel is only as good as the instrument it is computed from, and that link is
+# not recoverable from the mapping table, so it is declared here. Keyed by ChannelGroup.
+derived_quality:
+
+  pressure:
+    quality: unreliable
+    derived_from: [PI251, PI252, PI253, PI254]
+
+  level_from_pressure:
+    quality: unreliable
+    derived_from: [PI251, PI252, PI253, PI254]
+    reason: >-
+      Back-calculated from the pressure transmitters, so it inherits their static-pressure
+      limitation: the level reads wrong whenever fluid moves past the sensor.
+
+  level_from_pressure_rel:
+    quality: unreliable
+    derived_from: [PI251, PI252, PI253, PI254]
+    reason: >-
+      As level_from_pressure, referenced to the zero level instead of absolute.
+
+  volume:
+    quality: good
+    derived_from: [LI211, LI212, LI213, LI214]
+    reason: >-
+      Derived from the ultrasonic level sensors, not from pressure. Confirmed by the plant
+      author, 2026-09-11.
+
+  level_from_volume:
+    quality: good
+    derived_from: [LI211, LI212, LI213, LI214]
+
+controller:
+  manufacturer: WAGO
+  product_type: 750-8212 PFC200 G2 2ETH RS
+  product_designation: Programmable fieldbus controller
+  source: >-
+    Derived from the OPC UA NodeId prefix in Simulation_Variable_Mapping.xlsx, and
+    documents/Process_Equipment/PLC/
+  programming_system: WAGO e!COCKPIT
+  project: 231120_ModVA_MischmodulV8.ecp

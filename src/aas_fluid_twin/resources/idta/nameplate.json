@@ -1,0 +1,215 @@
+{
+  "key": "nameplate",
+  "idta": "IDTA 02006-3-0",
+  "source": "https://github.com/admin-shell-io/submodel-templates/blob/main/published/Digital nameplate/3/0/1/IDTA 02006-3-0-1_Template_Digital Nameplate.json",
+  "submodel": {
+    "idShort": "Nameplate",
+    "id": "https://admin-shell.io/idta/SubmodelTemplate/DigitalNameplate/3/0",
+    "semanticId": "https://admin-shell.io/idta/nameplate/3/0/Nameplate",
+    "kind": "Template"
+  },
+  "elements": {
+    "URIOfTheProduct": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABN590#002",
+      "valueType": "xs:anyURI",
+      "cardinality": "One"
+    },
+    "ManufacturerName": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0112/2///61987#ABA565#009",
+      "cardinality": "One"
+    },
+    "ManufacturerProductDesignation": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0112/2///61987#ABA567#009",
+      "cardinality": "One"
+    },
+    "AddressInformation": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/AddressInformation",
+      "cardinality": "One"
+    },
+    "ManufacturerProductRoot": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0112/2///61360_7#AAS011#001",
+      "cardinality": "ZeroToOne"
+    },
+    "ManufacturerProductFamily": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0112/2///61987#ABP464#002",
+      "cardinality": "ZeroToOne"
+    },
+    "ManufacturerProductType": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABA300#008",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "OrderCodeOfManufacturer": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABA950#008",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "ProductArticleNumberOfManufacturer": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABA581#007",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SerialNumber": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABA951#009",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "YearOfConstruction": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABP000#002",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "DateOfManufacture": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABB757#007",
+      "valueType": "xs:date",
+      "cardinality": "ZeroToOne"
+    },
+    "HardwareVersion": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABA926#008",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "FirmwareVersion": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABA302#006",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SoftwareVersion": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABA601#008",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "CountryOfOrigin": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABP462#001",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "UniqueFacilityIdentifier": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/nameplate/3/0/UniqueFacilityIdentifier",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "CompanyLogo": {
+      "modelType": "File",
+      "semanticId": "0112/2///61987#ABP463#001",
+      "cardinality": "ZeroToOne"
+    },
+    "Markings": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0112/2///61360_7#AAS006#001",
+      "typeValueListElement": "SubmodelElementCollection",
+      "cardinality": "ZeroToOne"
+    },
+    "Markings/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0112/2///61360_7#AAS009#001",
+      "cardinality": "OneToMany"
+    },
+    "Markings/[]/MarkingName": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABA231#009",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "Markings/[]/DesignationOfCertificateOrApproval": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABH783#003",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "Markings/[]/IssueDate": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABO097#001",
+      "valueType": "xs:date",
+      "cardinality": "ZeroToOne"
+    },
+    "Markings/[]/ExpiryDate": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABH830#002",
+      "valueType": "xs:date",
+      "cardinality": "ZeroToOne"
+    },
+    "Markings/[]/MarkingFile": {
+      "modelType": "File",
+      "semanticId": "0112/2///61987#ABO100#002",
+      "cardinality": "One"
+    },
+    "Markings/[]/MarkingAdditionalText": {
+      "modelType": "Property",
+      "semanticId": "0112/2///61987#ABB146#007",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "AssetSpecificProperties": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABI218#003/0173-1#01-AGZ672#004",
+      "cardinality": "ZeroToOne"
+    },
+    "AssetSpecificProperties/ArbitraryProperty": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/SMT/General/ArbitraryProp",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "AssetSpecificProperties/ArbitraryMLP": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/SMT/General/ArbitraryMLP",
+      "cardinality": "ZeroToMany"
+    },
+    "AssetSpecificProperties/ArbitraryFile": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/SMT/General/ArbitraryFile",
+      "cardinality": "ZeroToMany"
+    },
+    "AssetSpecificProperties/GuidelineSpecificProperties": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABI219#003/0173-1#01-AHD205#004",
+      "typeValueListElement": "SubmodelElementCollection",
+      "cardinality": "ZeroToOne"
+    },
+    "AssetSpecificProperties/GuidelineSpecificProperties/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#01-AHD205#004",
+      "cardinality": "OneToMany"
+    },
+    "AssetSpecificProperties/GuidelineSpecificProperties/[]/GuidelineForConformityDeclaration": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO856#002",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "AssetSpecificProperties/GuidelineSpecificProperties/[]/ArbitraryProperty": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/SMT/General/ArbitraryProp",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "AssetSpecificProperties/GuidelineSpecificProperties/[]/ArbitraryFile": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/SMT/General/ArbitraryFile",
+      "cardinality": "ZeroToMany"
+    },
+    "AssetSpecificProperties/GuidelineSpecificProperties/[]/ArbitraryMLP": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/SMT/General/ArbitraryMLP",
+      "cardinality": "ZeroToMany"
+    }
+  }
+}

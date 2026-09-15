@@ -1,0 +1,70 @@
+{
+  "key": "hierarchical_structures",
+  "idta": "IDTA 02011-1-1",
+  "source": "https://github.com/admin-shell-io/submodel-templates/blob/main/published/Hierarchical Structures enabling Bills of Material/1/1/1/IDTA 02011-1-1-1_Template_HSEBoM_forAASMetamodelV3.1.json",
+  "submodel": {
+    "idShort": "HierarchicalStructures",
+    "id": "https://admin-shell.io/idta/SubmodelTemplate/HierarchicalStructuresBoM/1/1",
+    "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel",
+    "kind": "Template"
+  },
+  "elements": {
+    "EntryNode": {
+      "modelType": "Entity",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0",
+      "cardinality": "One"
+    },
+    "EntryNode/Node": {
+      "modelType": "Entity",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/Node/1/0",
+      "cardinality": "OneToMany"
+    },
+    "EntryNode/Node/Node": {
+      "modelType": "Entity",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/Node/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "EntryNode/Node/SameAs": {
+      "modelType": "RelationshipElement",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "EntryNode/Node/IsPartOf": {
+      "modelType": "RelationshipElement",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/IsPartOf/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "EntryNode/Node/HasPart": {
+      "modelType": "RelationshipElement",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/HasPart/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "EntryNode/Node/BulkCount": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/BulkCount/1/0",
+      "valueType": "xs:unsignedLong",
+      "cardinality": "ZeroToOne"
+    },
+    "EntryNode/SameAs": {
+      "modelType": "RelationshipElement",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "EntryNode/IsPartOf": {
+      "modelType": "RelationshipElement",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/IsPartOf/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "EntryNode/HasPart": {
+      "modelType": "RelationshipElement",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/HasPart/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "ArcheType": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    }
+  }
+}

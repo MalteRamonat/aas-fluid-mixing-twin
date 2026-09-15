@@ -1,0 +1,234 @@
+# Fault annotations for the ModVA fluid mixing benchmark
+#
+# Source: the plant operator and benchmark author, stated directly (2026-09-11).
+# Every `source: operator_log` value below is ground truth, not an estimate.
+# Never overwrite an `operator_log` value with an estimate; `scripts/estimate_onsets.py`
+# may only fill entries whose source is `unknown`.
+#
+# Times are seconds on the `Session Time Stamps` column of the corresponding CSV,
+# i.e. relative to the first sample of the run.
+
+schema_version: 1
+
+# --------------------------------------------------------------------------
+# Scenario definitions — how each fault was physically induced
+# --------------------------------------------------------------------------
+scenarios:
+
+  normal_behaviour:
+    label: 0
+    description: >-
+      Nominal dosing and mixing cycle. The stirrer R201 is off.
+    induction: null
+    affected_components: []
+    use_for_anomaly_detection: true
+
+  leakage:
+    label: 1
+    description: >-
+      Liquid leaves the plant on the pressure side of the dosing pump, so the volume
+      delivered to B204 is lower than the volume drawn from B201/B202/B203.
+    induction: >-
+      Valve V211 (P&ID, branch Tee4 -> Pipe_Tee4_V211 -> V211 -> Pipe_V211_X203 -> X203)
+      opened partially. V211 sits downstream of P201 and FI271 and upstream of B204,
+      so the leaked flow is measured by FI271 but never reaches B204. The leaked liquid
+      leaves the plant at the external connection X203.
+    injection_points: [V211]
+    affected_components: [V211, P201, FI271, B204]
+    use_for_anomaly_detection: true
+
+  clogging:
+    label: 2
+    description: >-
+      Restricted flow on the suction side of the discharge pump, so B204 empties more
+      slowly than nominal.
+    induction: >-
+      Valve V212 closed partially. V212 exists solely to induce clogging and is NOT drawn
+      in the P&ID; it sits in the line B204 -> V207 -> Tee5 -> P202.
+    injection_points: [V212]
+    affected_components: [V212, P202, B204, V207, FI272]
+    use_for_anomaly_detection: true
+
+  leakage_and_clogging:
+    label: 3
+    description: Both faults above active in the same run.
+    induction: V211 partially open AND V212 partially closed.
+    injection_points: [V211, V212]
+    affected_components: [V211, V212, P201, FI271, B204, P202, V207]
+    use_for_anomaly_detection: true
+
+  changed_initial_state:
+    label: 4
+    description: Run started from a non-nominal initial tank filling.
+    induction: null
+    affected_components: []
+    use_for_anomaly_detection: false
+    note: >-
+      The only run with this label (dataset_14) is marked unusable by the author.
+      The scenario is kept in the catalogue because the label value occurs in the data,
+      but it carries no usable run.
+
+  reconfiguration:
+    label: 5
+    description: >-
+      Two physically different plant reconfigurations share this label. They are modelled
+      as two sub-scenarios because their signatures and affected components differ.
+    induction: null
+    affected_components: []
+    use_for_anomaly_detection: true
+    sub_scenarios:
+
+      leak_recirculated_to_B201:
+        runs: [dataset_12_reconfiguration, dataset_41_reconfiguration]
+        description: >-
+          The V211 branch is not a loss but a recirculation: what leaves through V211 is
+          funnelled back into B201 instead of out of the plant.
+        induction: >-
+          The V211 discharge (normally to X203) routed back into B201. Total plant
+          inventory is conserved; the dosing balance between the tanks is not.
+        injection_points: [V211]
+        affected_components: [V211, P201, B201, B204]
+
+      B204_crossover_via_V210:
+        runs: [dataset_26_reconfiguration, dataset_46_reconfiguration]
+        description: >-
+          A hydrostatic levelling path is opened between B204 and the dosing tanks.
+          Whenever V201, V202 or V203 opens, liquid equalises by gravity rather than
+          only being pumped.
+        induction: >-
+          Valve V210 (P&ID, Tee3 <-> Tee5) opened. Tee3 is in the dosing suction manifold
+          downstream of V201/V202/V203; Tee5 is between V207 and P202 on the B204 outlet.
+        injection_points: [V210]
+        affected_components: [V210, B201, B202, B203, B204, V201, V202, V203]
+
+  sensor_errors:
+    label: 6
+    description: >-
+      Measurement faults on the ultrasonic level sensors. The hydraulics are nominal;
+      only the level readings are wrong.
+    induction: >-
+      Objects deliberately placed in front of the ultrasonic level sensors LI211-LI214
+      so that the reading is intermittently wrong.
+    injection_points: [LI211, LI212, LI213, LI214]
+    affected_components: [LI211, LI212, LI213, LI214]
+    use_for_anomaly_detection: true
+    note: >-
+      Because the tank volume channels are derived from the ultrasonic sensors, the
+      Tank_B20x_Volume and Tank_B20x_level_calculated_via_VolumeB20x channels are
+      corrupted by this fault as well.
+
+  stirring_error:
+    label: 7
+    description: >-
+      The stirrer R201 in B204 runs when it should be off. The resulting waves and
+      splashes corrupt the level readings.
+    induction: >-
+      R201 switched on. In nominal operation R201 is always off.
+    injection_points: [R201]
+    affected_components: [R201, B204, LI214]
+    use_for_anomaly_detection: true
+    note: >-
+      The time spent stirring also delays the nominal cycle, so the run is time-shifted
+      against a normal reference outside the fault windows. A detector must not treat
+      that shift as the anomaly.
+
+  manual_mode:
+    label: 8
+    description: Plant operated manually rather than by the PLC sequence.
+    induction: null
+    affected_components: []
+    use_for_anomaly_detection: false
+    note: Excluded from anomaly detection by the author.
+
+# --------------------------------------------------------------------------
+# Per-run annotations
+# --------------------------------------------------------------------------
+runs:
+
+  dataset_10_leakage:
+    scenario: leakage
+    usable: true
+    events: [{onset_s: 66.0, end_s: null, source: operator_log}]
+
+  dataset_11_leakage:
+    scenario: leakage
+    usable: true
+    events: [{onset_s: 322.0, end_s: null, source: operator_log}]
+
+  dataset_13_leakage_and_clogging:
+    scenario: leakage_and_clogging
+    usable: true
+    events: [{onset_s: 69.0, end_s: null, source: operator_log}]
+
+  dataset_15_clogging:
+    scenario: clogging
+    usable: true
+    events: [{onset_s: 77.0, end_s: null, source: operator_log}]
+
+  dataset_40_clogging:
+    scenario: clogging
+    usable: true
+    events: [{onset_s: 84.0, end_s: null, source: operator_log}]
+
+  dataset_42_clogging:
+    scenario: clogging
+    usable: true
+    events: [{onset_s: 120.0, end_s: null, source: operator_log}]
+
+  dataset_14_changed_initial_state:
+    scenario: changed_initial_state
+    usable: false
+    reason: Marked unusable by the author.
+    events: []
+
+  dataset_12_reconfiguration:
+    scenario: reconfiguration
+    sub_scenario: leak_recirculated_to_B201
+    usable: true
+    events: [{onset_s: 29.0, end_s: null, source: operator_log}]
+
+  dataset_41_reconfiguration:
+    scenario: reconfiguration
+    sub_scenario: leak_recirculated_to_B201
+    usable: true
+    events: [{onset_s: 34.0, end_s: null, source: operator_log}]
+
+  dataset_26_reconfiguration:
+    scenario: reconfiguration
+    sub_scenario: B204_crossover_via_V210
+    usable: true
+    events: [{onset_s: 16.0, end_s: null, source: operator_log}]
+
+  dataset_46_reconfiguration:
+    scenario: reconfiguration
+    sub_scenario: B204_crossover_via_V210
+    usable: true
+    events: [{onset_s: 20.0, end_s: null, source: operator_log}]
+
+  dataset_43_sensor_errors:
+    scenario: sensor_errors
+    usable: true
+    events: [{onset_s: 66.0, end_s: null, source: operator_log}]
+    note: Clearly visible in the level readings.
+
+  dataset_45_sensor_errors:
+    scenario: sensor_errors
+    usable: true
+    events: [{onset_s: 0.0, end_s: null, source: operator_log}]
+    note: >-
+      Subtle. The only visible effect is that the B203 tank level reads lower than normal
+      for the whole run.
+
+  dataset_44_stirring_error:
+    scenario: stirring_error
+    usable: true
+    events:
+      - {onset_s: 84.0,  end_s: 99.0,  source: operator_log}
+      - {onset_s: 267.0, end_s: 283.0, source: operator_log}
+      - {onset_s: 450.0, end_s: 467.0, source: operator_log}
+    note: >-
+      The only run with bounded fault windows. Outside the windows the run is nominal but
+      time-shifted relative to a normal reference, because stirring consumes cycle time.
+
+  # dataset_47..54 (manual_mode) carry no fault events; the scenario itself is excluded
+  # from anomaly detection. All remaining datasets are normal_behaviour with no events.

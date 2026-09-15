@@ -1,0 +1,432 @@
+{
+  "key": "simulation_models",
+  "idta": "IDTA 02005-1-1",
+  "source": "https://github.com/admin-shell-io/submodel-templates/blob/main/published/Provision of Simulation Models/1/1/IDTA 02005_Template_ProvisionOfSimulationModel.json",
+  "submodel": {
+    "idShort": "SimulationModels",
+    "id": "https://admin-shell.io/idta/SubmodelTemplate/SimulationModels/1/1",
+    "semanticId": "https://admin-shell.io/idta/SubmodelTemplate/SimulationModels/1/1",
+    "kind": "Template"
+  },
+  "elements": {
+    "SimulationModel": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/SimulationModel/1/1",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Summary": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Summary/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/SimPurpose": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/SimPurpose/1/0",
+      "cardinality": "One"
+    },
+    "SimulationModel/SimPurpose/PosSimPurpose": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/PosSimPurpose/1/0",
+      "valueType": "xs:string",
+      "cardinality": "OneToMany"
+    },
+    "SimulationModel/SimPurpose/NegSimPurpose": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/NegSimPurpose/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/TypeOfModel": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/TypeOfModel/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/ScopeOfModel": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ScopeOfModel/1/0",
+      "valueType": "xs:string",
+      "cardinality": "OneToMany"
+    },
+    "SimulationModel/LicenseModel": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/LicenseModel/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/EngineeringDomain": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/EngineeringDomain/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Environment": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Environment/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Environment/OperatingSystem": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/OperatingSystem/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/Environment/ToolEnvironment": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ToolEnvironment/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Environment/DependencyEnvironment": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/DependencyEnvironment/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Environment/VisualizationInformation": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/VisualizationInformation/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Environment/SimulationTool": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/SimulationTool/1/0",
+      "cardinality": "OneToMany"
+    },
+    "SimulationModel/Environment/SimulationTool/SimToolName": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/SimToolName/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/Environment/SimulationTool/DependencySimTool": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/DependencySimTool/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Environment/SimulationTool/Compiler": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Compiler/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Environment/SimulationTool/SolverAndTolerances": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/SolverAndTolerances/1/0",
+      "cardinality": "One"
+    },
+    "SimulationModel/Environment/SimulationTool/SolverAndTolerances/StepSizeControlNeeded": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/StepSizeControlNeeded/1/0",
+      "valueType": "xs:boolean",
+      "cardinality": "One"
+    },
+    "SimulationModel/Environment/SimulationTool/SolverAndTolerances/FixedStepSize": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/FixedStepSize/1/0",
+      "valueType": "xs:float",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Environment/SimulationTool/SolverAndTolerances/StiffSolverNeeded": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/StiffSolverNeeded/1/0",
+      "valueType": "xs:boolean",
+      "cardinality": "One"
+    },
+    "SimulationModel/Environment/SimulationTool/SolverAndTolerances/SolverIncluded": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/SolverIncluded/1/0",
+      "valueType": "xs:boolean",
+      "cardinality": "One"
+    },
+    "SimulationModel/Environment/SimulationTool/SolverAndTolerances/TestedToolSolverAlgorithm": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/TestedToolSolverAlgorithm/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Environment/SimulationTool/SolverAndTolerances/TestedToolSolverAlgorithm/SolverAlgorithm": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/SolverAlgorithm/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/Environment/SimulationTool/SolverAndTolerances/TestedToolSolverAlgorithm/ToolSolverFurtherDescription": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ToolSolverFurtherDescription/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Environment/SimulationTool/SolverAndTolerances/TestedToolSolverAlgorithm/Tolerance": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Tolerance/1/0",
+      "valueType": "xs:float",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/RefSimDocumentation": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/RefSimDocumentation/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/ModelFile": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ModelFile/1/0",
+      "cardinality": "One"
+    },
+    "SimulationModel/ModelFile/ModelFileType": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ModelFileType/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/ModelFile/ModelFileVersion": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ModelFileVersion/1/0",
+      "cardinality": "OneToMany"
+    },
+    "SimulationModel/ModelFile/ModelFileVersion/ModelVersionId": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ModelVersionId/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/ModelFile/ModelFileVersion/ModelPreviewImage": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ModelPreviewImage/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/ModelFile/ModelFileVersion/DigitalFile": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/DigitalFile/1/0",
+      "cardinality": "One"
+    },
+    "SimulationModel/ModelFile/ModelFileVersion/ModelFileReleaseNotesTxt": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ModelFileReleaseNotesTxt/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/ModelFile/ModelFileVersion/ModelFileReleaseNotesFile": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ModelFileReleaseNotesFile/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/ParamMethod": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ParamMethod/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/ParamFile": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/ParamFile/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/InitStateMethod": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/InitStateMethod/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/InitStateFile": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/InitStateFile/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/DefaultSimTime": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/DefaultSimTime/1/0",
+      "valueType": "xs:float",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/SimModManufacturerInformation": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/SimModManufacturerInformation/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/SimModManufacturerInformation/Company": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAW001#001",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/SimModManufacturerInformation/Language": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO895#003",
+      "valueType": "xs:string",
+      "cardinality": "OneToMany"
+    },
+    "SimulationModel/SimModManufacturerInformation/Email": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-AAQ836#005",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/SimModManufacturerInformation/Email/TypeOfEmailAddress": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO199#003",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/SimModManufacturerInformation/Email/EmailAddress": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO198#002",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/SimModManufacturerInformation/Email/TypeOfPublicKey": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO201#002",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/SimModManufacturerInformation/Email/PublicKey": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO200#002",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/SimModManufacturerInformation/Phone": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation/Phone",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/SimModManufacturerInformation/Phone/TypeOfTelephone": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO137#003",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/SimModManufacturerInformation/Phone/TelephoneNumber": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO136#002",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/SimModManufacturerInformation/Phone/AvailableTime": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation/AvailableTime/",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Ports": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Ports/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Ports/PortsConnector": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/PortsConnector/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Ports/PortsConnector/PortConnectorName": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/PortsConnectorName/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/Ports/PortsConnector/PortConDescription": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/portConDescription/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Ports/PortsConnector/Variable": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Variable/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Ports/PortsConnector/Variable/VariableName": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/VariableName/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/Ports/PortsConnector/Variable/Range": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Range/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Ports/PortsConnector/Variable/VariableType": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/VariableType/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/Ports/PortsConnector/Variable/VariableDescription": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/VariableDescription/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Ports/PortsConnector/Variable/UnitList": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/UnitList/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/Ports/PortsConnector/Variable/UnitDescription": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/UnitDescription/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Ports/PortsConnector/Variable/VariableCausality": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/VariableCausality/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/Ports/PortsConnector/Variable/VariablePrefix": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/VariablePrefix/1/0",
+      "valueType": "xs:string",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Ports/BinaryConnector": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/BinaryConnector/1/0",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Ports/BinaryConnector/BinaryConName": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/BinaryConnectorName/1/0",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "SimulationModel/Ports/BinaryConnector/BinaryConDescription": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/BinaryConDescription/1/0",
+      "cardinality": "ZeroToOne"
+    },
+    "SimulationModel/Quality": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Quality/1/1",
+      "cardinality": "ZeroToMany"
+    },
+    "SimulationModel/Quality/Usability": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Usability/1/1",
+      "valueType": "xs:positiveInteger",
+      "cardinality": "One"
+    },
+    "SimulationModel/Quality/Architecture": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Architecture/1/1",
+      "valueType": "xs:positiveInteger",
+      "cardinality": "One"
+    },
+    "SimulationModel/Quality/Validation": {
+      "modelType": "Property",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/Validation/1/1",
+      "valueType": "xs:positiveInteger",
+      "cardinality": "One"
+    },
+    "SimulationModel/Quality/QualityMetricFile": {
+      "modelType": "File",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/QualityMetricFile/1/1",
+      "cardinality": "One"
+    },
+    "SimulationModel/Quality/EvaluationPerspective": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "https://admin-shell.io/idta/SimulationModels/EvaluationPerspective/1/1",
+      "cardinality": "One"
+    }
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "key": "handover_documentation",
+  "idta": "IDTA 02004-2-0",
+  "source": "https://github.com/admin-shell-io/submodel-templates/blob/main/published/Handover Documentation/2/0/1/IDTA 02004-2-0-1_Template_HandoverDocumentation__forAASMetamodelV3.1.json",
+  "submodel": {
+    "idShort": "HandoverDocumentation",
+    "id": "https://admin-shell.io/idta/SubmodelTemplate/HandoverDocumentation/2/0",
+    "semanticId": "0173-1#01-AHF578#003",
+    "kind": "Template"
+  },
+  "elements": {
+    "Documents": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABI500#003",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "0173-1#02-ABI500#003/0173-1#01-AHF579#003",
+      "cardinality": "One"
+    },
+    "Documents/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABI500#003/0173-1#01-AHF579#003",
+      "cardinality": "OneToMany"
+    },
+    "Documents/[]/DocumentIds": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABI501#003",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "0173-1#02-ABI501#003/0173-1#01-AHF580#003",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentIds/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABI501#003/0173-1#01-AHF580#003",
+      "cardinality": "OneToMany"
+    },
+    "Documents/[]/DocumentIds/[]/DocumentDomainId": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABH994#003",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentIds/[]/DocumentIdentifier": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAO099#004",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentIds/[]/DocumentIsPrimary": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABH995#003",
+      "valueType": "xs:boolean",
+      "cardinality": "ZeroToOne"
+    },
+    "Documents/[]/DocumentClassifications": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABI502#003",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "0173-1#02-ABI502#003/0173-1#01-AHF581#003",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentClassifications/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABI502#003/0173-1#01-AHF581#003",
+      "cardinality": "OneToMany"
+    },
+    "Documents/[]/DocumentClassifications/[]/ClassId": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABH996#003",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentClassifications/[]/ClassName": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0173-1#02-ABJ219#002",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentClassifications/[]/ClassificationSystem": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABH997#003",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABI503#003",
+      "typeValueListElement": "SubmodelElementCollection",
+      "semanticIdListElement": "0173-1#02-ABI503#003/0173-1#01-AHF582#003",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]": {
+      "modelType": "SubmodelElementCollection",
+      "semanticId": "0173-1#02-ABI503#003/0173-1#01-AHF582#003",
+      "cardinality": "OneToMany"
+    },
+    "Documents/[]/DocumentVersions/[]/Language": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-AAN468#008",
+      "typeValueListElement": "Property",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]/Language/[]": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAN468#008",
+      "valueType": "xs:string",
+      "cardinality": "OneToMany"
+    },
+    "Documents/[]/DocumentVersions/[]/Version": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-AAP003#005",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]/Title": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0173-1#02-ABG940#003",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]/Subtitle": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0173-1#02-ABH998#003",
+      "cardinality": "ZeroToOne"
+    },
+    "Documents/[]/DocumentVersions/[]/Description": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0173-1#02-AAN466#004",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]/KeyWords": {
+      "modelType": "MultiLanguageProperty",
+      "semanticId": "0173-1#02-ABH999#003",
+      "cardinality": "ZeroToOne"
+    },
+    "Documents/[]/DocumentVersions/[]/StatusSetDate": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABI000#003",
+      "valueType": "xs:date",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]/StatusValue": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABI001#003",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]/OrganizationShortName": {
+      "modelType": "Property",
+      "semanticId": "https://api.eclass-cdp.com/0173-1-02-ABI002-003",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]/OrganizationOfficialName": {
+      "modelType": "Property",
+      "semanticId": "0173-1#02-ABI004#003",
+      "valueType": "xs:string",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]/RefersToEntities": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABK288#002",
+      "typeValueListElement": "ReferenceElement",
+      "cardinality": "ZeroToOne"
+    },
+    "Documents/[]/DocumentVersions/[]/RefersToEntities/[]": {
+      "modelType": "ReferenceElement",
+      "semanticId": "0173-1#02-ABK288#002",
+      "cardinality": "OneToMany"
+    },
+    "Documents/[]/DocumentVersions/[]/BasedOnReferences": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABK289#002",
+      "typeValueListElement": "ReferenceElement",
+      "cardinality": "ZeroToOne"
+    },
+    "Documents/[]/DocumentVersions/[]/BasedOnReferences/[]": {
+      "modelType": "ReferenceElement",
+      "semanticId": "0173-1#02-ABK289#002",
+      "cardinality": "OneToMany"
+    },
+    "Documents/[]/DocumentVersions/[]/TranslationOfEntities": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABK290#002",
+      "typeValueListElement": "ReferenceElement",
+      "cardinality": "ZeroToOne"
+    },
+    "Documents/[]/DocumentVersions/[]/TranslationOfEntities/[]": {
+      "modelType": "ReferenceElement",
+      "semanticId": "0173-1#02-ABK290#002",
+      "cardinality": "OneToMany"
+    },
+    "Documents/[]/DocumentVersions/[]/DigitalFiles": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "0173-1#02-ABK126#002",
+      "typeValueListElement": "File",
+      "cardinality": "One"
+    },
+    "Documents/[]/DocumentVersions/[]/DigitalFiles/[]": {
+      "modelType": "File",
+      "semanticId": "0173-1#02-ABK126#002",
+      "cardinality": "OneToMany"
+    },
+    "Documents/[]/DocumentVersions/[]/PreviewFile": {
+      "modelType": "File",
+      "semanticId": "0173-1#02-ABK127#002",
+      "cardinality": "ZeroToOne"
+    },
+    "Documents/[]/DocumentedEntities": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/vdi/2770/1/0/Document/DocumentedEntities",
+      "typeValueListElement": "ReferenceElement",
+      "cardinality": "ZeroToOne"
+    },
+    "Documents/[]/DocumentedEntities/[]": {
+      "modelType": "ReferenceElement",
+      "semanticId": "https://admin-shell.io/vdi/2770/1/0/Document/DocumentedEntity",
+      "cardinality": "OneToMany"
+    },
+    "Entities": {
+      "modelType": "SubmodelElementList",
+      "semanticId": "https://admin-shell.io/vdi/2770/1/0/EntitiesForDocumentation",
+      "typeValueListElement": "Entity",
+      "cardinality": "ZeroToOne"
+    },
+    "Entities/[]": {
+      "modelType": "Entity",
+      "semanticId": "https://admin-shell.io/vdi/2770/1/0/EntityForDocumentation",
+      "cardinality": "OneToMany"
+    }
+  }
+}

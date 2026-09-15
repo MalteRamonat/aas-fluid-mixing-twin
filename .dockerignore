@@ -1,0 +1,10 @@
+# Keep the image build context small: only what docker/api/Dockerfile copies.
+*
+!pyproject.toml
+!README.md
+!src/
+!scripts/
+!data/fault_annotations.yaml
+!docker/
+**/__pycache__/
+**/*.pyc

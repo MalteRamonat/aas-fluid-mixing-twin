@@ -1,0 +1,82 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aas-fluid-twin"
+version = "0.1.0"
+description = "Asset Administration Shell digital twin of the ModVA fluid mixing plant"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+dependencies = [
+    "basyx-python-sdk>=2.1.0",
+    "openpyxl>=3.1",
+    "pyyaml>=6.0",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+store = ["psycopg[binary]>=3.2"]
+sim = ["fmpy>=0.3.21", "httpx>=0.27"]
+api = ["fastapi>=0.115", "uvicorn[standard]>=0.32", "pydantic>=2.9"]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "ruff>=0.8",
+    "black>=24.10",
+    "mypy>=1.13",
+    "types-PyYAML",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aas_fluid_twin"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "scripts"]
+extend-exclude = ["artifacts", "out"]  # build output, not source
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF"]
+
+ignore = ["RUF001", "RUF002", "RUF003"]  # plant tags legitimately use ambiguous unicode
+
+[tool.ruff.lint.per-file-ignores]
+# Modelica declarations are matched and emitted verbatim; wrapping them would break the match.
+"scripts/derive_faultcapable.py" = ["E501"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.mypy]
+# 3.12 rather than the supported 3.11 only because numpy's stubs (pulled in via pytest.approx
+# once fmpy installs numpy) use PEP 695 syntax; ruff's py311 target keeps the code itself 3.11.
+python_version = "3.12"
+strict = true
+files = ["src", "tests", "scripts"]
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["openpyxl.*", "fmpy.*"]
+ignore_missing_imports = true
+
+# basyx-python-sdk re-exports its public API implicitly and leaves some helpers untyped.
+[[tool.mypy.overrides]]
+module = ["basyx.*", "pyecma376_2.*"]
+implicit_reexport = true
+
+[[tool.mypy.overrides]]
+module = ["aas_fluid_twin.aas.io", "tests.test_aas_roundtrip"]
+disallow_untyped_calls = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "benchmark_data: needs the benchmark dataset in data/benchmark (scripts/fetch_benchmark.py)",
+    "integration: needs the Docker stack running",
+]

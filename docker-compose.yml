@@ -1,0 +1,202 @@
+# ModVA digital twin — service stack.
+#
+#   docker compose up -d                 BaSyx repository, registries, discovery, web UI,
+#                                        TimescaleDB, the twin API, a one-shot ingest of the
+#                                        recorded runs, OpenModelica and the simulation runner
+#
+# `openmodelica` compiles both model versions before it reports healthy (~90 s) and
+# `sim-runner` waits for it, so the stack takes about two minutes to come up.
+#
+# All BaSyx images are pinned to a milestone tag, never SNAPSHOT (rebuilt daily). Each image
+# defines its own HEALTHCHECK (curl on /actuator/health); depends_on waits for it.
+# The AAS environment preloads out/modva.aasx at start-up — run `python scripts/build_aas.py`
+# first — so the repository is populated without any push. scripts/push_to_basyx.py is the
+# API path for updates and for verifying the round trip.
+#
+# The `ingest` service needs the benchmark on the host (`python scripts/fetch_benchmark.py`);
+# it exits after loading the 55 runs and verifying them against the CSVs.
+#
+# After a restart the AASX preload may attach only part of the files (see CLAUDE.md) — run
+# `python scripts/push_to_basyx.py` to upload them all and verify.
+
+name: modva-twin
+
+services:
+
+  aas-env:
+    image: eclipsebasyx/aas-environment:2.0.0-milestone-15
+    container_name: modva-aas-env
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./docker/basyx/aas-env.properties:/application/application.properties:ro
+      - ./out/modva.aasx:/application/aas/modva.aasx:ro
+    depends_on:
+      aas-registry:
+        condition: service_healthy
+      sm-registry:
+        condition: service_healthy
+      aas-discovery:
+        condition: service_healthy
+    restart: unless-stopped
+
+  aas-registry:
+    image: eclipsebasyx/aas-registry-log-mem:2.0.0-milestone-15
+    container_name: modva-aas-registry
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./docker/basyx/aas-registry.yml:/workspace/config/application.yml:ro
+    restart: unless-stopped
+
+  sm-registry:
+    image: eclipsebasyx/submodel-registry-log-mem:2.0.0-milestone-15
+    container_name: modva-sm-registry
+    ports:
+      - "8083:8080"
+    volumes:
+      - ./docker/basyx/sm-registry.yml:/workspace/config/application.yml:ro
+    restart: unless-stopped
+
+  aas-discovery:
+    image: eclipsebasyx/aas-discovery:2.0.0-milestone-15
+    container_name: modva-aas-discovery
+    ports:
+      - "8084:8081"
+    volumes:
+      - ./docker/basyx/aas-discovery.properties:/application/application.properties:ro
+    restart: unless-stopped
+
+  aas-web-ui:
+    # The BaSyx AAS Web UI: the standards-compliant browser for everything in the repository.
+    image: eclipsebasyx/aas-gui:v2-260910
+    container_name: modva-aas-web-ui
+    ports:
+      - "3000:3000"
+    environment:
+      AAS_REGISTRY_PATH: "http://localhost:8082/shell-descriptors"
+      SUBMODEL_REGISTRY_PATH: "http://localhost:8083/submodel-descriptors"
+      AAS_DISCOVERY_PATH: "http://localhost:8084/lookup/shells"
+      AAS_REPO_PATH: "http://localhost:8081/shells"
+      SUBMODEL_REPO_PATH: "http://localhost:8081/submodels"
+      CD_REPO_PATH: "http://localhost:8081/concept-descriptions"
+    depends_on:
+      aas-env:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # --- time series ------------------------------------------------------------------
+
+  timescaledb:
+    image: timescale/timescaledb:2.30.0-pg16
+    container_name: modva-timescaledb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: modva
+      POSTGRES_PASSWORD: modva
+      POSTGRES_DB: modva
+    volumes:
+      - timescale-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U modva -d modva"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    # Serves the dashboard, the LinkedSegment endpoint (/api/timeseries), the AAS-sourced
+    # channel metadata and the simulation control the dashboard posts to.
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    image: modva-twin/api:local
+    container_name: modva-api
+    ports:
+      - "8000:8000"
+    environment:
+      AAS_TIMESERIES_DSN: postgresql://modva:modva@timescaledb:5432/modva
+      AAS_BASYX_URL: http://aas-env:8081
+      AAS_SIM_RUNNER_URL: http://sim-runner:8000
+      # The browser opens these, so they are host URLs, not container names.
+      AAS_WEB_UI_URL: ${AAS_WEB_UI_URL:-http://localhost:3000}
+      SIM_INVOKE_MODE: ${SIM_INVOKE_MODE:-direct}
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+    restart: unless-stopped
+
+  ingest:
+    # One shot: applies the schema, loads every recorded run, verifies, exits.
+    image: modva-twin/api:local
+    container_name: modva-ingest
+    command: ["python", "scripts/ingest_timeseries.py"]
+    environment:
+      AAS_TIMESERIES_DSN: postgresql://modva:modva@timescaledb:5432/modva
+    volumes:
+      - ./data/benchmark:/data/benchmark:ro
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+      api:
+        condition: service_started   # only so the shared image is built before this starts
+    restart: "no"
+
+  # --- simulation --------------------------------------------------------------------
+
+  openmodelica:
+    # OpenModelica 1.22.1 (the benchmark's version) + MSL 4.0.0. Compiles both model versions
+    # at start (~70 s together) and simulates them on demand for sim-runner. Also the image
+    # scripts/export_fmu.py runs omc in.
+    build:
+      context: .
+      dockerfile: docker/openmodelica/Dockerfile
+    image: modva-twin/openmodelica:local
+    container_name: modva-openmodelica
+    ports:
+      - "8010:8010"
+    volumes:
+      - ./data/benchmark:/work/data/benchmark:ro
+      - ./src/aas_fluid_twin/resources/modelica:/work/resources/modelica:ro
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8010/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 120s
+    restart: unless-stopped
+
+  sim-runner:
+    # Queues simulation runs, stores each result, appends its segments to the simulation AAS.
+    # BaSyx delegates the RunSimulation / GetRunStatus operations here
+    # (docker/basyx/aas-env.properties). Backend: the OpenModelica worker by default;
+    # SIM_BACKEND=fmpy runs artifacts/ModVA_online_stable.fmu with FMPy instead (see D7).
+    build:
+      context: .
+      dockerfile: docker/sim-runner/Dockerfile
+    image: modva-twin/sim-runner:local
+    container_name: modva-sim-runner
+    ports:
+      - "8001:8000"
+    environment:
+      SIM_BACKEND: ${SIM_BACKEND:-openmodelica}
+      SIM_MODEL: ${SIM_MODEL:-ModVA_faultcapable}   # the version with the fault handles (D8)
+      AAS_OM_WORKER_URL: http://openmodelica:8010
+      AAS_TIMESERIES_DSN: postgresql://modva:modva@timescaledb:5432/modva
+      AAS_BASYX_URL: http://aas-env:8081
+      AAS_TIMESERIES_ENDPOINT: http://localhost:8000/api/timeseries
+    volumes:
+      - ./artifacts:/artifacts:ro
+      - ./data/benchmark:/data/benchmark:ro
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+      openmodelica:
+        condition: service_healthy
+      aas-env:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  timescale-data:
