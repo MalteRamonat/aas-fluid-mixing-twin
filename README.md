@@ -42,7 +42,6 @@ Data*, IEEE Access 2025, [10.1109/ACCESS.2025.3592815](https://doi.org/10.1109/A
 | [`docs/plant-topology.md`](docs/plant-topology.md) | The plant itself: vessels, valves, pumps, instruments, flow paths, fault injection points |
 | [`docs/benchmark-deviations.md`](docs/benchmark-deviations.md) | Every difference from the upstream benchmark, with its evidence — including eight defects found and fixed or worked around |
 | [`data/fault_annotations.yaml`](data/fault_annotations.yaml) | How each fault was induced and when it started, as recorded by the plant operator |
-| [`CLAUDE.md`](CLAUDE.md) | Working notes: decisions, gotchas, implementation order |
 
 ## Getting started
 
