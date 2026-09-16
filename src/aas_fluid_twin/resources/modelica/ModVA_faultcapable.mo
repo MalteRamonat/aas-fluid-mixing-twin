@@ -2,8 +2,10 @@
 // scripts/derive_faultcapable.py (aas-fluid-mixing-twin). Do not edit by hand.
 //
 // Adds the elements the recorded faults were induced with (Tee4/V211/X203, Tee3/Tee5/V210,
-// V212 as a parameter) and corrects the TI261/TI262 placement (deviation D4). With the fault
-// handles at their defaults the model is hydraulically the upstream model.
+// V212 as a parameter), corrects the TI261/TI262 placement (deviation D4) and reads the
+// actuator table from "actuators.txt" instead of a 30-row literal (deviation D9). With the
+// fault handles at their defaults, and the embedded schedule written to that file, the model
+// behaves as the upstream one.
 model ModVA_faultcapable
   //input Real Test =4;
   /*
@@ -181,7 +183,7 @@ model ModVA_faultcapable
     Placement(visible = true, transformation(origin = {-90, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Continuous.FirstOrder P202_Characteristic(T = 1, k = 100) annotation(
     Placement(visible = true, transformation(origin = {46, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.CombiTimeTable ActuatorControl(table = [0.666854, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 9.814724, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 36.58265, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 61.005047, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 63.436195, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 87.566434, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 90.038029, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0; 117.746421, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0; 145.552872, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0; 172.382396, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 173.98046, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 199.040477, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 226.016638, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 251.662394, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0; 278.878051, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0; 305.968482, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0; 335.499928, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 337.132809, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 361.863531, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 388.631872, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 414.924363, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0; 442.347847, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0; 470.993791, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0; 498.149002, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0; 499.896796, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 527.467523, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 553.483404, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0; 578.807363, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0; 580.653431, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0; 600.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], timeEvents = Modelica.Blocks.Types.TimeEvents.NoTimeEvents, smoothness = Modelica.Blocks.Types.Smoothness.ConstantSegments) annotation(
+  Modelica.Blocks.Sources.CombiTimeTable ActuatorControl(tableOnFile = true, tableName = "actuators", fileName = "actuators.txt", columns = 2:10, extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint, timeEvents = Modelica.Blocks.Types.TimeEvents.NoTimeEvents, smoothness = Modelica.Blocks.Types.Smoothness.ConstantSegments) annotation(
     Placement(transformation(origin = {-180, -6}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Pipes.StaticPipe Pipe_B204_V207(redeclare package Medium = Medium, diameter = 0.01, height_ab = -0.006, length = 0.21) annotation(
     Placement(transformation(origin = {47, 3}, extent = {{5, 5}, {-5, -5}}, rotation = 90)));
@@ -287,7 +289,76 @@ model ModVA_faultcapable
   Modelica.Fluid.Pipes.StaticPipe pipe_Tee3_V210(redeclare package Medium = Medium, diameter = 0.01, height_ab = 0, length = crossover_length / 2);
   Modelica.Fluid.Valves.ValveLinear V210(redeclare package Medium = Medium, dp_nominal = 20, dp_start = 0, m_flow_nominal = 0.1, m_flow_small = 0.000001, m_flow_start = 0);
   Modelica.Fluid.Pipes.StaticPipe pipe_V210_Tee5(redeclare package Medium = Medium, diameter = 0.01, height_ab = 0, length = crossover_length / 2);
+  // --- Two-point control (ModVA_faultcapable) ----------------------------------------------
+  // Each actuator either follows the schedule (mode 0) or switches on one of the measured
+  // signals below with hysteresis (mode 1). Everything here is a parameter, so a control law
+  // costs a simulation, not a recompile. The bus order is defined in
+  // src/aas_fluid_twin/simulation/control.py and generated from it.
+  constant String ctrl_actuator[9] = {"V201", "V202", "V203", "V206", "V205", "V204", "V209", "P201", "P202"} "Actuator per control slot, in table order";
+  parameter Integer ctrl_mode[9] = zeros(9) "0 = follow the schedule, 1 = two-point control";
+  parameter Integer ctrl_source[9] = ones(9) "Index into ctrl_signal";
+  parameter Real ctrl_on_below[9] = fill(-Modelica.Constants.inf, 9) "Switch on below this value (model units)";
+  parameter Real ctrl_off_above[9] = fill(Modelica.Constants.inf, 9) "Switch off above this value (model units)";
+  parameter Integer ctrl_invert[9] = zeros(9) "1 drives the actuator closed where it would open";
+  Real ctrl_signal[16] "The measured signals a rule may switch on";
+  Boolean ctrl_state[9](start = fill(false, 9)) "Latched state of each two-point controller";
+  Real ctrl_input[9] "The bus entry each controller reads (selected without indexing)";
+  parameter Modelica.Units.SI.Time ctrl_tau = 0.1 "Measurement lag of the controllers' inputs";
+  Real ctrl_measured[9] "ctrl_input through a first-order lag of ctrl_tau — a sensor's response, and what keeps the switching condition out of the hydraulic equation system";
+  Real ctrl_command[9] "What the controller asks of each actuator";
+initial equation
+  // --- Two-point control: a rule is evaluated at t = 0, not only on a crossing ------------
+  for i in 1:9 loop
+    ctrl_measured[i] = ctrl_input[i];
+    pre(ctrl_state[i]) = ctrl_measured[i] < ctrl_on_below[i]
+      or (ctrl_on_below[i] <= -Modelica.Constants.inf
+          and ctrl_measured[i] <= ctrl_off_above[i]);
+  end for;
 equation
+  // --- Two-point control ---------------------------------------------------------------
+  ctrl_signal[1] = tank_B201.V;
+    ctrl_signal[2] = tank_B202.V;
+    ctrl_signal[3] = tank_B203.V;
+    ctrl_signal[4] = tank_B204.V;
+    ctrl_signal[5] = tank_B201.level;
+    ctrl_signal[6] = tank_B202.level;
+    ctrl_signal[7] = tank_B203.level;
+    ctrl_signal[8] = tank_B204.level;
+    ctrl_signal[9] = FI271.V_flow;
+    ctrl_signal[10] = FI272.V_flow;
+    ctrl_signal[11] = PI251.p;
+    ctrl_signal[12] = PI252.p;
+    ctrl_signal[13] = PI253.p;
+    ctrl_signal[14] = PI254.p;
+    ctrl_signal[15] = TI261.T;
+    ctrl_signal[16] = TI262.T;
+  for i in 1:9 loop
+    // Not ``ctrl_signal[ctrl_source[i]]``: a parameter used as a subscript is evaluated at
+    // compile time and can no longer be overridden per run — every rule then silently read
+    // bus entry 1 whatever it named. The sum selects the entry with a plain comparison.
+    ctrl_input[i] = sum({if ctrl_source[i] == k then ctrl_signal[k] else 0.0 for k in 1:16});
+    // The condition is on a state, not on the algebraic pressures and flows: a switching
+    // condition inside the hydraulic equation system is a when-equation inside a non-linear
+    // system, which OpenModelica refuses to compile ("non-linear equations within
+    // when-equations"). The lag is a sensor's, and short against the plant's 1.6 s sampling.
+    der(ctrl_measured[i]) = (ctrl_input[i] - ctrl_measured[i]) / ctrl_tau;
+    when ctrl_measured[i] < ctrl_on_below[i] then
+      ctrl_state[i] = true;
+    elsewhen ctrl_measured[i] > ctrl_off_above[i] then
+      ctrl_state[i] = false;
+    end when;
+    ctrl_command[i] = if ctrl_state[i] then (if ctrl_invert[i] == 1 then 0 else 1)
+                      else (if ctrl_invert[i] == 1 then 1 else 0);
+  end for;
+  V201.opening = if ctrl_mode[1] == 0 then ActuatorControl.y[1] else ctrl_command[1];
+  V202.opening = if ctrl_mode[2] == 0 then ActuatorControl.y[2] else ctrl_command[2];
+  V203.opening = if ctrl_mode[3] == 0 then ActuatorControl.y[3] else ctrl_command[3];
+  V206.opening = if ctrl_mode[4] == 0 then ActuatorControl.y[4] else ctrl_command[4];
+  V205.opening = if ctrl_mode[5] == 0 then ActuatorControl.y[5] else ctrl_command[5];
+  V204.opening = if ctrl_mode[6] == 0 then ActuatorControl.y[6] else ctrl_command[6];
+  V209.opening = if ctrl_mode[7] == 0 then ActuatorControl.y[7] else ctrl_command[7];
+  P201_Characteristic.u = if ctrl_mode[8] == 0 then ActuatorControl.y[8] else ctrl_command[8];
+  P202_Characteristic.u = if ctrl_mode[9] == 0 then ActuatorControl.y[9] else ctrl_command[9];
   V210.opening = V210_opening;
   V211.opening = V211_opening;
   V211_to_X203.opening = if V211_return_to_B201 then 0 else 1;
@@ -444,24 +515,6 @@ equation
     Line(points = {{14, -40}, {14, -34}}, color = {0, 127, 255}));
   connect(pipe_P201_FI271.port_a, P201.port_b) annotation(
     Line(points = {{14, -50}, {14, -54}, {-2, -54}}, color = {0, 127, 255}));
-  connect(ActuatorControl.y[1], V201.opening) annotation(
-    Line(points = {{-168, -6}, {-92, -6}, {-92, -12}}, color = {0, 0, 127}));
-  connect(ActuatorControl.y[2], V202.opening) annotation(
-    Line(points = {{-168, -6}, {-54, -6}, {-54, -10}}, color = {0, 0, 127}));
-  connect(ActuatorControl.y[3], V203.opening) annotation(
-    Line(points = {{-168, -6}, {-18, -6}, {-18, -8}}, color = {0, 0, 127}));
-  connect(ActuatorControl.y[4], V206.opening) annotation(
-    Line(points = {{-168, -6}, {-122, -6}, {-122, 60}, {-18, 60}, {-18, 66}}, color = {0, 0, 127}));
-  connect(ActuatorControl.y[5], V205.opening) annotation(
-    Line(points = {{-168, -6}, {-122, -6}, {-122, 60}, {-54, 60}, {-54, 68}}, color = {0, 0, 127}));
-  connect(ActuatorControl.y[6], V204.opening) annotation(
-    Line(points = {{-168, -6}, {-122, -6}, {-122, 60}, {-92, 60}, {-92, 70}}, color = {0, 0, 127}));
-  connect(ActuatorControl.y[7], V209.opening) annotation(
-    Line(points = {{-168, -6}, {-122, -6}, {-122, -90}, {154, -90}, {154, 2}, {120, 2}, {120, -6}}, color = {0, 0, 127}));
-  connect(ActuatorControl.y[8], P201_Characteristic.u) annotation(
-    Line(points = {{-168, -6}, {-122, -6}, {-122, -70}, {-102, -70}}, color = {0, 0, 127}));
-  connect(ActuatorControl.y[9], P202_Characteristic.u) annotation(
-    Line(points = {{-168, -6}, {-122, -6}, {-122, -90}, {34, -90}, {34, -70}}, color = {0, 0, 127}));
   annotation(
     uses(Modelica(version = "4.0.0")),
  //good results with IDA, max 1 Integration and 1 Processor. Still need to figure out optimal solver setup

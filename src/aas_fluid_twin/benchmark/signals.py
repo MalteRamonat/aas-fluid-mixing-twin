@@ -126,6 +126,20 @@ CORRECTIONS: tuple[Correction, ...] = (
             "(Simulation_variable_name = tank_B204.level). See deviation N2."
         ),
     ),
+    *(
+        Correction(
+            key=f"Tank_B20{tank}_level_calculated_via_LI21{tank}",
+            field_name="unit",
+            was="cm",
+            now="mm",
+            reason=(
+                "The ultrasonic level is recorded in millimetres: it reads 9.9 times the "
+                "volume-derived level in every run and 149.6 in a 22 cm tank. Confirmed by "
+                "the plant author on 2026-09-16. See deviation D10."
+            ),
+        )
+        for tank in (1, 2, 3, 4)
+    ),
 )
 
 #: Human-readable names where the CSV column is misspelled or terse. The column itself is
@@ -394,16 +408,20 @@ def load_signal_dictionary(
             continue
 
         sensor_id = _clean(row["Sensor_ID"])
+        unit = _nullable(row["Unit_Sensor"])
         for correction in corrections_by_channel.get(channel, ()):
+            current = {"sensor_id": sensor_id, "unit": unit}[correction.field_name]
+            if current != correction.was:
+                raise ValueError(
+                    f"correction for {channel!r} expected {correction.field_name} "
+                    f"{correction.was!r} but the mapping table now says {current!r}. "
+                    "The upstream file changed — review docs/benchmark-deviations.md."
+                )
             if correction.field_name == "sensor_id":
-                if sensor_id != correction.was:
-                    raise ValueError(
-                        f"correction for {channel!r} expected sensor_id {correction.was!r} "
-                        f"but the mapping table now says {sensor_id!r}. "
-                        "The upstream file changed — review docs/benchmark-deviations.md."
-                    )
                 sensor_id = correction.now
-                applied.append(correction)
+            else:
+                unit = correction.now
+            applied.append(correction)
 
         device_type = DeviceType(_clean(row["Type_of_Sensor_or_Actuator"]).lower())
         instrument = instruments.get(sensor_id)
@@ -422,7 +440,7 @@ def load_signal_dictionary(
                 channel=channel,
                 display_name=_DISPLAY_NAMES.get(channel, channel.replace("_", " ")),
                 opcua_node_id=_clean(row["Sensor_OPCUA_Node_ID"]),
-                unit=_nullable(row["Unit_Sensor"]),
+                unit=unit,
                 sim_variable=_nullable(row["Simulation_variable_name"]),
                 sim_unit=_nullable(row["Unit_Simulation_variable"]),
                 sim_init_parameter=_nullable(row["Simulation_initialization_parameters"]),

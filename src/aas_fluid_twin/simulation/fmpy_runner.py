@@ -53,7 +53,13 @@ class FmpyRunner:
         unknown = [v for v in request.outputs if v not in self._variables]
         if unknown:
             raise SimulationError(f"unknown output variables: {unknown[:5]}")
-        not_settable = [p for p in request.start_values() if p not in self._parameters]
+        # This FMU is exported from the upstream model, whose table is a fixed 30x10 literal,
+        # so the schedule goes in as table parameters and inherits that limit.
+        try:
+            start_values = {**request.schedule.start_values(), **request.start_values()}
+        except ValueError as error:
+            raise SimulationError(str(error)) from error
+        not_settable = [p for p in start_values if p not in self._parameters]
         if not_settable:
             raise SimulationError(f"not settable in the FMU: {not_settable[:5]}")
 
@@ -66,7 +72,7 @@ class FmpyRunner:
                 start_time=request.start_time,
                 stop_time=request.stop_time,
                 output_interval=request.output_interval,
-                start_values=request.start_values(),
+                start_values=start_values,
                 output=list(request.outputs),
                 validate=False,
             )

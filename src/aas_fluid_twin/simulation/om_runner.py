@@ -10,26 +10,49 @@ This is the default path because no FMU export of this model runs under FMPy —
 
 from __future__ import annotations
 
+import logging
 import os
 import time
 from typing import Any, Final
 
 import httpx
 
-from aas_fluid_twin.simulation.runner import SimulationError, SimulationRequest, SimulationResult
+from aas_fluid_twin.simulation.runner import (
+    IntegrationStoppedError,
+    SimulationError,
+    SimulationRequest,
+    SimulationResult,
+)
 
 __all__ = ["DEFAULT_OM_WORKER_URL", "OmRunner", "worker_models"]
+
+log = logging.getLogger("sim-runner")
 
 DEFAULT_OM_WORKER_URL: Final[str] = os.environ.get("AAS_OM_WORKER_URL", "http://openmodelica:8010")
 
 
-def worker_models(worker_url: str = DEFAULT_OM_WORKER_URL, timeout_s: float = 30.0) -> list[str]:
-    """The model versions the worker has compiled, default first."""
-    try:
-        response = httpx.get(f"{worker_url.rstrip('/')}/health", timeout=timeout_s)
-        response.raise_for_status()
-    except httpx.HTTPError as error:
-        raise SimulationError(f"OpenModelica worker at {worker_url}: {error}") from error
+def worker_models(
+    worker_url: str = DEFAULT_OM_WORKER_URL, timeout_s: float = 30.0, wait_s: float = 0.0
+) -> list[str]:
+    """The model versions the worker has compiled, default first.
+
+    The worker does not listen until every model is compiled (a few minutes after a stack
+    restart), so a service starting alongside it keeps trying for ``wait_s`` before giving up.
+    """
+    deadline = time.monotonic() + wait_s
+    waited = False
+    while True:
+        try:
+            response = httpx.get(f"{worker_url.rstrip('/')}/health", timeout=timeout_s)
+            response.raise_for_status()
+            break
+        except httpx.HTTPError as error:
+            if time.monotonic() >= deadline:
+                raise SimulationError(f"OpenModelica worker at {worker_url}: {error}") from error
+            if not waited:
+                log.info("waiting for the OpenModelica worker at %s to compile", worker_url)
+            waited = True
+            time.sleep(5.0)
     body = response.json()
     models = [str(m) for m in body.get("models", [])]
     default = str(body.get("default_model", ""))
@@ -82,6 +105,9 @@ class OmRunner:
     def run(self, request: SimulationRequest) -> SimulationResult:
         payload = {
             "model": self._model_name,
+            # The worker decides how the schedule reaches the model: a table file for the
+            # fault-capable version, table parameters for the fixed-table upstream one.
+            "schedule": request.schedule.table(),
             "start_values": request.start_values(),
             "start_time": request.start_time,
             "stop_time": request.stop_time,
@@ -106,13 +132,18 @@ class OmRunner:
         # a 600 s horizon would be stored and published as a completed run.
         times = [float(t) for t in body["time"]]
         if not times:
-            raise SimulationError(f"{self._model_name}: the solver produced no output")
+            raise SimulationError(
+                f"{self._model_name}: the model could not be initialised with these parameters "
+                "and this schedule (the solver produced no output); a shut valve in front of a "
+                "running pump or a tank filled past its height are the usual causes"
+            )
         shortfall = request.stop_time - times[-1]
         if shortfall > max(1e-6, request.output_interval / 2):
-            raise SimulationError(
+            raise IntegrationStoppedError(
                 f"{self._model_name}: {request.solver} stopped at t = {times[-1]:.4g} s of the "
                 f"requested {request.stop_time:g} s (integrator failure or an event it could "
-                f"not resolve); the partial result is discarded"
+                f"not resolve); the partial result is discarded",
+                reached=times[-1],
             )
 
         # OpenModelica writes every event instant twice (before/after); keep the after-value so

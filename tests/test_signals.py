@@ -35,7 +35,7 @@ SPOT_CHECKS: tuple[tuple[str, str, str | None, str | None], ...] = (
     ("Valve_V209_opening", "V209", None, "V209.opening"),
     ("Pump_P201_active", "P201", None, "P201_Characteristic.u"),
     ("Mixer_R201_of_B204_active", "R201", None, None),
-    ("Tank_B203_level_calculated_via_LI213", "LI213", "cm", "LI213.y"),
+    ("Tank_B203_level_calculated_via_LI213", "LI213", "mm", "LI213.y"),
     ("Tank_B204_level_calculated_via_PI254", "Level_B204_via_PI254", "cm", None),
 )
 
@@ -66,12 +66,22 @@ def test_the_upstream_typo_survives_as_the_machine_key(signals: SignalDictionary
 
 
 def test_declared_corrections_are_applied_and_nothing_else(signals: SignalDictionary) -> None:
-    assert len(CORRECTIONS) == 1
-    assert signals.corrections_applied == CORRECTIONS
+    assert len(CORRECTIONS) == 5
+    assert sorted(signals.corrections_applied, key=lambda c: c.key) == sorted(
+        CORRECTIONS, key=lambda c: c.key
+    )
 
     # Mapping table row 39 repeats the B203 sensor id while describing B204.
     assert signals.by_channel("Tank_B204_level_calculated_via_VolumeB204").sensor_id == "Level_B204"
     assert signals.by_channel("Tank_B203_level_calculated_via_VolumeB203").sensor_id == "Level_B203"
+
+    # The ultrasonic level is in millimetres (deviation D10, confirmed by the plant author);
+    # the volume-derived level keeps the table's centimetres.
+    for tank in (1, 2, 3, 4):
+        assert signals.by_channel(f"Tank_B20{tank}_level_calculated_via_LI21{tank}").unit == "mm"
+        assert (
+            signals.by_channel(f"Tank_B20{tank}_level_calculated_via_VolumeB20{tank}").unit == "cm"
+        )
 
 
 def test_opcua_node_ids_identify_the_controller(signals: SignalDictionary) -> None:

@@ -27,6 +27,7 @@ from aas_fluid_twin.api.metadata import get_metadata
 from aas_fluid_twin.api.schemas import (
     SimulationConfigOut,
     SimulationRequestIn,
+    control_signal_out,
     model_version_out,
     parameter_out,
     schedule_out,
@@ -79,6 +80,10 @@ class SimRunner:
 
     def run(self, run_id: str) -> dict[str, Any]:
         body: dict[str, Any] = self._get(f"/runs/{run_id}")
+        return body
+
+    def schedule_from_run(self, run_id: str) -> dict[str, Any]:
+        body: dict[str, Any] = self._get(f"/schedules/from-run/{run_id}")
         return body
 
     # -- submission --
@@ -144,6 +149,7 @@ class SimRunner:
                 None,
             ),
             prop("parameterOverrides", json.dumps(payload.get("parameter_overrides") or {}), None),
+            prop("controlRules", json.dumps(payload.get("control_rules") or []), None),
         ]
         if payload.get("model"):
             inputs.append(prop("model", str(payload["model"]), None))
@@ -204,12 +210,20 @@ def simulation_config(runner: Runner, metadata: Metadata) -> SimulationConfigOut
         schedules=[schedule_out(s) for s in config.schedules],
         model_versions=[model_version_out(v) for v in config.model_versions],
         operation_defaults=config.operation_defaults,
+        control_signals=[control_signal_out(s) for s in config.control_signals],
+        control_actuators=list(config.control_actuators),
     )
 
 
 @router.post("/simulations", status_code=202)
 def start_simulation(runner: Runner, request: SimulationRequestIn) -> dict[str, Any]:
     return runner.submit(request.to_payload())
+
+
+@router.get("/runs/{run_id}/schedule")
+def schedule_of_run(runner: Runner, run_id: str) -> dict[str, Any]:
+    """The actuator commands of a recorded run, ready to drive a simulation with."""
+    return runner.schedule_from_run(run_id)
 
 
 @router.get("/simulations")

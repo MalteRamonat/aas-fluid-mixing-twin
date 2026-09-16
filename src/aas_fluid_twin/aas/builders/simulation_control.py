@@ -30,7 +30,9 @@ from aas_fluid_twin.aas.builders._common import (
 )
 from aas_fluid_twin.aas.context import BuildContext
 from aas_fluid_twin.aas.semantics import semantic
-from aas_fluid_twin.simulation.runner import TESTED_SOLVER
+from aas_fluid_twin.simulation.control import CONTROL_SIGNALS
+from aas_fluid_twin.simulation.runner import PARAMETER_BOUNDS, TESTED_SOLVER
+from aas_fluid_twin.simulation.schedule import ACTUATORS
 
 __all__ = ["SCHEDULE_ATTACHMENT_PATH", "SUBMODEL_ID", "build_simulation_control"]
 
@@ -128,12 +130,14 @@ def _fault_handles(ctx: BuildContext) -> Iterable[model.SubmodelElementCollectio
         "V212_opening",
         1.0,
         "1",
-        0.0,
-        1.0,
+        *PARAMETER_BOUNDS["V212_opening"],
         "Clogging handle. The upstream model's V207 sits exactly where the physical throttle "
         "V212 was installed (B204 -> P202) and is pinned to 1 there "
         f"(dp_nominal = {v207.modifiers.get('dp_nominal'):g} Pa); the fault-capable version "
-        "renames it V212 and makes its opening a parameter. Below 1 reproduces clogging.",
+        "renames it V212 and makes its opening a parameter. Below 1 reproduces clogging. "
+        f"The minimum is {PARAMETER_BOUNDS['V212_opening'][0]:g}: a fully shut throttle in "
+        "front of P202 cannot be initialised, and the recorded clogging runs only partially "
+        "close it.",
         fault_role="clogging",
     )
     yield _parameter(
@@ -141,8 +145,7 @@ def _fault_handles(ctx: BuildContext) -> Iterable[model.SubmodelElementCollectio
         "V211_opening",
         0.0,
         "1",
-        0.0,
-        1.0,
+        *PARAMETER_BOUNDS["V211_opening"],
         "Leakage handle. Requires the fault-capable model version (adds Tee4, V211 and the "
         "boundary X203). Above 0 reproduces leakage.",
         fault_role="leakage",
@@ -163,8 +166,7 @@ def _fault_handles(ctx: BuildContext) -> Iterable[model.SubmodelElementCollectio
         "V210_opening",
         0.0,
         "1",
-        0.0,
-        1.0,
+        *PARAMETER_BOUNDS["V210_opening"],
         "Reconfiguration B. Requires the fault-capable model version (adds Tee3, Tee5 and "
         "V210). Above 0 opens the hydrostatic crossover.",
         fault_role="reconfiguration/B204_crossover_via_V210",
@@ -207,6 +209,47 @@ def _schedules() -> model.SubmodelElementCollection:
             file("File", SCHEDULE_ATTACHMENT_PATH, "text/csv", _sem("Schedule")),
             description="Schedule published with the benchmark under Simulation_Model_Control/.",
         ),
+    )
+
+
+def _control_vocabulary() -> model.SubmodelElementCollection:
+    """What a control rule may refer to (design §12.4).
+
+    The rules themselves belong to a run, not to the plant, so they are recorded in
+    ``Runs/<run>/ParametersUsed``. What is published here is the vocabulary: which signals can
+    be switched on, in which unit a threshold is given, and which actuators can be taken off
+    the schedule. A consumer can build a valid rule from this alone.
+    """
+    return smc(
+        "ControlModes",
+        _sem("ControlSignals"),
+        smc(
+            "ControlSignals",
+            _sem("ControlSignals"),
+            *(
+                smc(
+                    signal.key,
+                    _sem("ControlSignal"),
+                    prop("Label", signal.label, _sem("ControlSignal")),
+                    prop("ModelVariable", signal.variable, _sem("ParameterName")),
+                    prop("Unit", signal.unit or "1", _sem("Unit")),
+                    prop_typed("Index", datatypes.Int, index, _sem("SignalIndex")),
+                    description=f"Threshold values for this signal are given in "
+                    f"{signal.unit or 'model units'}.",
+                )
+                for index, signal in enumerate(CONTROL_SIGNALS, start=1)
+            ),
+            description="Signals a two-point rule may switch on, in the model's bus order.",
+        ),
+        smc(
+            "ControlActuators",
+            _sem("ControlActuators"),
+            *(prop(actuator, "schedule", _sem("Actuator")) for actuator in ACTUATORS),
+            description="Each actuator follows the schedule unless a run gives it a rule; the "
+            "value is the default mode.",
+        ),
+        description="Vocabulary for the RunSimulation operation's controlRules input: "
+        "{actuator, signal, on_below, off_above, invert}, thresholds in the signal's unit.",
     )
 
 
@@ -261,6 +304,14 @@ def _operations(ctx: BuildContext) -> list[model.SubmodelElement]:
                 description="Free-text tag stored with the run, for saying what it was for.",
             ),
             prop(
+                "controlRules",
+                "[]",
+                None,
+                description="JSON array of two-point control rules, each taking one actuator "
+                "off the schedule: {actuator, signal, on_below, off_above, invert}. Thresholds "
+                "are in the signal's own engineering unit.",
+            ),
+            prop(
                 "parameterOverrides",
                 "{}",
                 None,
@@ -309,6 +360,7 @@ def build_simulation_control(ctx: BuildContext) -> model.Submodel:
             ),
             _schedules(),
             *_operations(ctx),
+            _control_vocabulary(),
             smc(
                 "Runs",
                 _sem("Runs"),

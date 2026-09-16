@@ -28,6 +28,7 @@ OPERATION_INPUTS = {
     "tolerance": "tolerance",
     "schedule": "schedule",
     "parameterOverrides": "parameter_overrides",
+    "controlRules": "control_rules",
     "model": "model",
     "label": "label",
 }
@@ -70,6 +71,7 @@ def test_the_operation_defaults_parse_into_a_usable_request(env: BuiltEnvironmen
     assert spec.parameter_overrides == {}
     assert spec.model is None  # an empty model means "the runner's default"
     assert spec.label is None
+    assert spec.control_rules == []  # every actuator follows the schedule
 
 
 def test_a_filled_in_form_survives_the_operation_encoding(env: BuiltEnvironment) -> None:
@@ -81,6 +83,14 @@ def test_a_filled_in_form_survives_the_operation_encoding(env: BuiltEnvironment)
         tolerance=1e-6,
         schedule="BenchmarkMatrix",
         parameter_overrides={"V211_opening": 0.3, "V211_return_to_B201": True},
+        control_rules=[
+            {
+                "actuator": "V204",
+                "signal": "Tank_B201_Volume",
+                "on_below": 500.0,
+                "off_above": 2000.0,
+            }
+        ],
         model="ModVA_faultcapable",
         label="leak, recirculated",
     )
@@ -92,6 +102,7 @@ def test_a_filled_in_form_survives_the_operation_encoding(env: BuiltEnvironment)
         "tolerance": str(sent.tolerance),
         "schedule": str(sent.schedule),
         "parameterOverrides": json.dumps(sent.parameter_overrides),
+        "controlRules": json.dumps(sent.control_rules),
         "model": sent.model or "",
         "label": sent.label or "",
     }

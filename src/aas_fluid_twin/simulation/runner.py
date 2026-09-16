@@ -15,8 +15,10 @@ from typing import Final, Protocol
 from aas_fluid_twin.simulation.schedule import ActuatorSchedule
 
 __all__ = [
+    "PARAMETER_BOUNDS",
     "PARAMETER_TARGETS",
     "TESTED_SOLVER",
+    "IntegrationStoppedError",
     "SimulationError",
     "SimulationRequest",
     "SimulationResult",
@@ -34,6 +36,14 @@ class SimulationError(RuntimeError):
     """The model could not be run as requested (unknown parameter, solver failure …)."""
 
 
+class IntegrationStoppedError(SimulationError):
+    """The solver ran but gave up before the stop time; ``reached`` is where."""
+
+    def __init__(self, message: str, reached: float) -> None:
+        super().__init__(message)
+        self.reached = reached
+
+
 #: ``SimulationControl/ParameterSet`` idShort -> Modelica parameter. Pump characteristic points
 #: keep their names; the fault handles exist only in the fault-capable model version.
 PARAMETER_TARGETS: Final[Mapping[str, str]] = {
@@ -45,6 +55,16 @@ PARAMETER_TARGETS: Final[Mapping[str, str]] = {
     "V211_opening": "V211_opening",
     "V211_return_to_B201": "V211_return_to_B201",
     "V210_opening": "V210_opening",
+}
+
+#: Values a handle accepts, in the model's units. The AAS ``ValueRange`` is built from this
+#: table and the runner refuses anything outside it, so a request is rejected with a reason
+#: instead of dying in the solver: ``V212_opening = 0`` (a fully shut throttle in front of P202)
+#: cannot be initialised at all, and the benchmark's clogging runs only ever partially close it.
+PARAMETER_BOUNDS: Final[Mapping[str, tuple[float, float]]] = {
+    "V212_opening": (0.01, 1.0),
+    "V211_opening": (0.0, 1.0),
+    "V210_opening": (0.0, 1.0),
 }
 
 
@@ -68,7 +88,13 @@ class SimulationRequest:
             raise ValueError("output_interval must be positive")
 
     def start_values(self) -> dict[str, float]:
-        return {**self.schedule.start_values(), **self.parameters}
+        """Model parameters only.
+
+        The actuator schedule is *not* folded in here: the fault-capable model reads its table
+        from a file (deviation D9), and only a fixed-table model wants it as
+        ``ActuatorControl.table[i,j]`` parameters. Each runner decides.
+        """
+        return dict(self.parameters)
 
 
 @dataclass(frozen=True, slots=True)
@@ -115,6 +141,12 @@ def resolve_parameters(
         if target not in settable:
             raise SimulationError(
                 f"parameter {key!r} (-> {target!r}) is not settable in this model version"
+            )
+        bounds = PARAMETER_BOUNDS.get(key)
+        if bounds is not None and not bounds[0] <= float(value) <= bounds[1]:
+            raise SimulationError(
+                f"parameter {key!r} = {float(value):g} is outside its range "
+                f"{bounds[0]:g} … {bounds[1]:g}"
             )
         resolved[target] = float(value)
     return resolved

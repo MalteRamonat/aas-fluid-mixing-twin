@@ -186,7 +186,7 @@ def test_aid_carries_every_channel_with_its_node_id(
 
 
 def test_measuring_spans_are_quoted_in_the_channel_unit(env: BuiltEnvironment) -> None:
-    """Datasheets say 0..1 bar and 70..1000 mm; the channels are kPa and cm."""
+    """Datasheets say 0..1 bar and 70..1000 mm; the channels are kPa and (since D10) mm."""
     aid = _submodel(env, env.plant, "AssetInterfacesDescription")
     properties = _at(aid, "InterfaceOPCUA", "InteractionMetadata", "properties")
     pressure = _at(properties, "Pressure_below_B201", "min_max")
@@ -194,7 +194,7 @@ def test_measuring_spans_are_quoted_in_the_channel_unit(env: BuiltEnvironment) -
     assert (pressure.min, pressure.max) == (0.0, 100.0)
     level = _at(properties, "Tank_B201_level_calculated_via_LI211", "min_max")
     assert isinstance(level, model.Range)
-    assert (level.min, level.max) == (7.0, 100.0)
+    assert (level.min, level.max) == (70.0, 1000.0)
     flow = _at(properties, "Flow_after_Pump_P201", "min_max")
     assert isinstance(flow, model.Range)
     assert (flow.min, flow.max) == (0.1, 25.0)

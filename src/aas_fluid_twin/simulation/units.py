@@ -68,6 +68,7 @@ _TO_SIM: dict[tuple[str, SimUnit], Callable[[float], float]] = {
     ("°C", SimUnit.KELVIN): lambda v: v + KELVIN_OFFSET,
     ("l/min", SimUnit.CUBIC_METRE_PER_SECOND): lambda v: v / 60_000.0,
     ("cm", SimUnit.METRE): lambda v: v / 100.0,
+    ("mm", SimUnit.METRE): lambda v: v / 1000.0,
 }
 
 _TO_SENSOR: dict[tuple[str, SimUnit], Callable[[float], float]] = {
@@ -76,6 +77,7 @@ _TO_SENSOR: dict[tuple[str, SimUnit], Callable[[float], float]] = {
     ("°C", SimUnit.KELVIN): lambda v: v - KELVIN_OFFSET,
     ("l/min", SimUnit.CUBIC_METRE_PER_SECOND): lambda v: v * 60_000.0,
     ("cm", SimUnit.METRE): lambda v: v * 100.0,
+    ("mm", SimUnit.METRE): lambda v: v * 1000.0,
 }
 
 

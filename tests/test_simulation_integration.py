@@ -253,3 +253,128 @@ def test_openmodelica_reproduces_the_published_result(signals: SignalDictionary)
         scale = max(abs(reference[variable][t]) for t in common) or 1.0
         tolerance = 0.0 if variable.endswith(".opening") else 1e-3
         assert deviations[-1] / scale <= tolerance, f"{variable}: {deviations[-1] / scale:.2e}"
+
+
+# --- step 8: driving the plant from the dashboard ----------------------------------------
+
+
+def test_a_recorded_runs_actuators_can_be_replayed(sim_runner: httpx.Client) -> None:
+    """Capability 2 of design §12: the commands the plant was given become a schedule."""
+    plan = httpx.get(f"{API}/api/runs/dataset_10_leakage/schedule", timeout=60).json()
+    assert plan["source_run"] == "dataset_10_leakage"
+    # A real run switches far more than the 30 rows the literal table could hold — that limit
+    # is what deviation D9 removed.
+    assert len(plan["rows"]) > 30
+    assert all(set(row) >= {"time", "V201", "P201"} for row in plan["rows"])
+    assert plan["rows"][0]["time"] == 0.0
+    # The tanks start where the recording started, or the replay diverges immediately.
+    assert set(plan["initial_state"]) == {f"tank_B20{i}_level_start" for i in (1, 2, 3, 4)}
+    assert all(0.0 <= level <= 0.35 for level in plan["initial_state"].values())
+    assert any("switching points" in note for note in plan["notes"])
+
+
+def test_a_schedule_longer_than_the_old_limit_runs(sim_runner: httpx.Client) -> None:
+    """Capability 3: an authored schedule of any length, straight from the dashboard."""
+    rows = [
+        {"time": float(second), "V201": float(second % 20 < 10), "P201": float(second % 20 < 10)}
+        for second in range(0, 40, 2)
+    ]
+    assert len(rows) > 15
+    submitted = sim_runner.post(
+        "/runs",
+        json={"stop_time": 20, "schedule": rows, "label": "authored schedule"},
+    )
+    assert submitted.status_code == 202, submitted.text
+    final = _wait(sim_runner, submitted.json()["run_id"], timeout_s=900)
+    assert final["status"] == "completed", final
+
+
+def test_a_control_rule_holds_a_tank_at_its_threshold(sim_runner: httpx.Client) -> None:
+    """Capability 4: the rule, not the schedule, decides what V204 does.
+
+    The recorded run's commands alone overfill B201 in the model — the plant's own level
+    supervision is not part of a replayed command sequence — so this is both the feature and
+    the fix for it.
+    """
+    plan = httpx.get(f"{API}/api/runs/dataset_10_leakage/schedule", timeout=60).json()
+    rows = [row for row in plan["rows"] if row["time"] <= 120]
+    submitted = sim_runner.post(
+        "/runs",
+        json={
+            "stop_time": 120,
+            "model": FAULTCAPABLE_MODEL,
+            "schedule": rows,
+            "parameter_overrides": plan["initial_state"],
+            "control_rules": [
+                {
+                    "actuator": "V204",
+                    "signal": "Tank_B201_Volume",
+                    "on_below": 500.0,
+                    "off_above": 2000.0,
+                }
+            ],
+            "label": "replay under a level rule",
+        },
+    )
+    assert submitted.status_code == 202, submitted.text
+    run_id = submitted.json()["run_id"]
+    final = _wait(sim_runner, run_id, timeout_s=900)
+    assert final["status"] == "completed", final
+
+    series = httpx.get(
+        f"{API}/api/timeseries",
+        params={"run_id": run_id, "channels": "Tank_B201_Volume"},
+        timeout=60,
+    ).json()
+    volumes = [v for v in series["channels"]["Tank_B201_Volume"] if v is not None]
+    # The rule closes V204 above 2000 ml, so B201 never approaches its 3149 ml brim.
+    assert max(volumes) <= 2100, max(volumes)
+    assert max(volumes) > 1500  # …and it did fill, so the rule is holding a level, not blocking
+
+
+def test_a_rule_reads_the_signal_it_names_and_holds_from_t0(sim_runner: httpx.Client) -> None:
+    """A one-sided rule on a signal that is not bus entry 1, evaluated at t = 0.
+
+    Two defects hid behind the first rule test using ``Tank_B201_Volume`` (entry 1): a
+    parameter used as an array subscript is compiled in, so every rule read entry 1; and a
+    ``when`` clause never fires on the initial value. P201 must run from t = 0 (B204 starts
+    below the threshold) and stop for good once B204 holds 3000 ml.
+    """
+    submitted = sim_runner.post(
+        "/runs",
+        json={
+            "stop_time": 60,
+            "model": FAULTCAPABLE_MODEL,
+            "schedule": "EmbeddedDefault",
+            "control_rules": [
+                {"actuator": "P201", "signal": "Tank_B204_Volume", "off_above": 3000.0}
+            ],
+            "label": "P201 off above 3000 ml in B204",
+        },
+    )
+    assert submitted.status_code == 202, submitted.text
+    run_id = submitted.json()["run_id"]
+    final = _wait(sim_runner, run_id, timeout_s=900)
+    assert final["status"] == "completed", final
+
+    series = httpx.get(
+        f"{API}/api/timeseries",
+        params={"run_id": run_id, "channels": "Tank_B204_Volume,Pump_P201_active"},
+        timeout=60,
+    ).json()
+    pump = series["channels"]["Pump_P201_active"]
+    volume = series["channels"]["Tank_B204_Volume"]
+    assert pump[0] == 1.0  # the rule, not the schedule (P201 is off until 9.8 s there)
+    assert pump[-1] == 0.0 and max(volume) < 3300, (pump[-1], max(volume))
+
+
+def test_rules_are_refused_where_the_model_cannot_honour_them(sim_runner: httpx.Client) -> None:
+    rejected = sim_runner.post(
+        "/runs",
+        json={
+            "stop_time": 5,
+            "model": UPSTREAM_MODEL,
+            "control_rules": [{"actuator": "V204", "signal": "Tank_B201_Volume", "on_below": 500}],
+        },
+    )
+    assert rejected.status_code == 422 and "two-point control" in rejected.text

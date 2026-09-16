@@ -18,7 +18,9 @@ import pytest
 
 from aas_fluid_twin import config
 from aas_fluid_twin.benchmark.modelica import ModelicaModel, load_modelica_model
+from aas_fluid_twin.simulation.control import CONTROL_SIGNALS
 from aas_fluid_twin.simulation.runner import PARAMETER_TARGETS
+from aas_fluid_twin.simulation.schedule import ACTUATORS
 
 pytestmark = pytest.mark.benchmark_data
 
@@ -65,7 +67,23 @@ def test_model_is_a_separate_version_not_a_patch_of_the_original(
     assert faultcapable.name == "ModVA_faultcapable"
     assert upstream.name == "ModVA_online_stable"
     assert faultcapable.experiment == upstream.experiment
-    assert faultcapable.actuator_table == upstream.actuator_table
+
+
+def test_the_actuator_table_is_read_from_a_file(faultcapable: ModelicaModel) -> None:
+    """Deviation D9: the schedule is data, so its length is not fixed at compile time."""
+    upstream = load_modelica_model()
+    assert len(upstream.actuator_table) == 30  # the literal the benchmark ships
+    assert faultcapable.actuator_table == ()  # no literal left to parse
+
+    source = config.FAULTCAPABLE_MODEL_FILE.read_text(encoding="utf-8")
+    assert "tableOnFile = true" in source
+    assert 'fileName = "actuators.txt"' in source
+    # Without an explicit column count the nine actuator outputs would not exist.
+    assert "columns = 2:10" in source
+    # The upstream table starts at t = 0.667 s and the block's default extrapolates the first
+    # two rows backwards — V201 opens to -0.073 at t = 0. With the crossover open that is fatal
+    # (IDA stops at 0.657 s), so the derived model holds the first row instead.
+    assert "extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint" in source
 
 
 def test_clogging_handle_replaces_the_pinned_valve(faultcapable: ModelicaModel) -> None:
@@ -120,6 +138,52 @@ def test_every_handle_defaults_to_the_nominal_plant(handle: str, nominal: float 
     assert match is not None, f"{handle} is not declared as a parameter"
     expected = str(nominal).lower() if isinstance(nominal, bool) else str(int(nominal))
     assert match["value"] == expected
+
+
+def test_every_actuator_can_be_taken_off_the_schedule(faultcapable: ModelicaModel) -> None:
+    """Deviation D9: a control law is a parameter set, so the model must declare the slots."""
+    source = config.FAULTCAPABLE_MODEL_FILE.read_text(encoding="utf-8")
+    n = len(ACTUATORS)
+    for array in ("ctrl_mode", "ctrl_source", "ctrl_on_below", "ctrl_off_above", "ctrl_invert"):
+        assert (
+            f"parameter Integer {array}[{n}]" in source or f"parameter Real {array}[{n}]" in source
+        )
+
+    # Each actuator either follows the table or takes its controller's command — and the
+    # upstream connect that wired the table straight in must be gone, or both would drive it.
+    targets = {
+        "V201": "V201.opening",
+        "V202": "V202.opening",
+        "V203": "V203.opening",
+        "V206": "V206.opening",
+        "V205": "V205.opening",
+        "V204": "V204.opening",
+        "V209": "V209.opening",
+        "P201": "P201_Characteristic.u",
+        "P202": "P202_Characteristic.u",
+    }
+    for position, actuator in enumerate(ACTUATORS, start=1):
+        assert (
+            f"{targets[actuator]} = if ctrl_mode[{position}] == 0 then "
+            f"ActuatorControl.y[{position}] else ctrl_command[{position}];" in source
+        )
+        assert f"connect(ActuatorControl.y[{position}]" not in source
+
+
+def test_the_signal_bus_matches_the_one_rules_are_written_against(
+    faultcapable: ModelicaModel,
+) -> None:
+    """An index means the same thing on both sides, or every stored rule silently repoints."""
+    source = config.FAULTCAPABLE_MODEL_FILE.read_text(encoding="utf-8")
+    for index, signal in enumerate(CONTROL_SIGNALS, start=1):
+        assert f"ctrl_signal[{index}] = {signal.variable};" in source
+    assert f"Real ctrl_signal[{len(CONTROL_SIGNALS)}]" in source
+    # A parameter used as a subscript is evaluated at compile time and cannot be overridden
+    # per run — with ``ctrl_signal[ctrl_source[i]]`` every rule silently read bus entry 1.
+    code = "\n".join(line for line in source.splitlines() if not line.lstrip().startswith("//"))
+    assert "ctrl_signal[ctrl_source[" not in code
+    assert "when ctrl_measured[i] < ctrl_on_below[i]" in code  # on a state, not the pressures
+    assert "initial equation" in code  # a rule holds at t = 0, not only after a crossing
 
 
 def test_the_runner_addresses_exactly_these_handles() -> None:

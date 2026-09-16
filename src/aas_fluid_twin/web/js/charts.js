@@ -157,7 +157,9 @@ function buildOption(group, data, colourOf, { showXAxisLabels, showFaultLabel, l
     grid: {
       left,
       right: 18,
-      top: binary ? 8 : 16,
+      // The legend sits above the plot; with an overlay it fills the width and would
+      // otherwise cover the topmost tick label.
+      top: binary ? 8 : 26,
       bottom: showXAxisLabels ? 46 : 16,
     },
     textStyle: { color: text, fontFamily: getComputedStyle(document.body).fontFamily },

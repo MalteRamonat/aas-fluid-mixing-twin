@@ -44,6 +44,7 @@ __all__ = [
     "AasMetadata",
     "AasUnavailableError",
     "ChannelInfo",
+    "ControlSignalInfo",
     "ModelVersionInfo",
     "ParameterInfo",
     "ScheduleInfo",
@@ -107,11 +108,24 @@ class ModelVersionInfo:
 
 
 @dataclass(frozen=True, slots=True)
+class ControlSignalInfo:
+    """A signal a control rule may switch on, as the AAS publishes it."""
+
+    key: str
+    label: str
+    unit: str | None
+    variable: str
+    index: int
+
+
+@dataclass(frozen=True, slots=True)
 class SimulationConfig:
     parameters: tuple[ParameterInfo, ...]
     schedules: tuple[ScheduleInfo, ...]
     model_versions: tuple[ModelVersionInfo, ...]
     operation_defaults: dict[str, str] = field(default_factory=dict)
+    control_signals: tuple[ControlSignalInfo, ...] = ()
+    control_actuators: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -405,11 +419,26 @@ def _parse_simulation(control: dict[str, Any], models: dict[str, Any]) -> Simula
             )
         )
 
+    control = _children(top.get("ControlModes", {}))
+    signals = [
+        ControlSignalInfo(
+            key=key,
+            label=_text(_children(element).get("Label")) or key,
+            unit=(lambda u: None if u in (None, "1") else u)(_text(_children(element).get("Unit"))),
+            variable=_text(_children(element).get("ModelVariable")) or "",
+            index=int(_number(_children(element).get("Index")) or 0),
+        )
+        for key, element in _children(control.get("ControlSignals", {})).items()
+    ]
+    signals.sort(key=lambda s: s.index)
+
     return SimulationConfig(
         parameters=tuple(parameters),
         schedules=tuple(schedules),
         model_versions=tuple(versions),
         operation_defaults=defaults,
+        control_signals=tuple(signals),
+        control_actuators=tuple(_children(control.get("ControlActuators", {}))),
     )
 
 

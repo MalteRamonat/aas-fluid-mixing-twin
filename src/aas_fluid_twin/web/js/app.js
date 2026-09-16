@@ -505,9 +505,20 @@ const simulation = new SimulationPanel(
     error: $("sim-error"),
     mode: $("sim-mode"),
     runs: $("sim-runs"),
+    editor: $("schedule-editor"),
+    editorField: $("editor-field"),
+    rules: $("rule-builder"),
+    replayField: $("replay-field"),
+    replayPicker: $("replay-picker"),
+    replayHint: $("replay-hint"),
+    replayInitial: $("replay-initial"),
+    horizon: $("editor-horizon"),
+    stepSize: $("editor-step"),
+    clearSchedule: $("editor-clear"),
   },
   {
     onStatus: setStatus,
+    runsProvider: () => state.runs,
     onRunFinished: async (job, options = {}) => {
       await refreshRuns();
       if (options.focus || !state.selected || state.selected.origin === "simulated") {

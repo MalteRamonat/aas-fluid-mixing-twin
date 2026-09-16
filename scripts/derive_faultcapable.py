@@ -20,6 +20,11 @@ Changes (all defaults reproduce the nominal plant — see docs/benchmark-deviati
 3. ``Tee3`` splits the V203 -> Tee2 line and ``Tee5`` the B204 -> V212 line; ``V210`` joins
    them (reconfiguration B).
 4. ``TI261`` and ``TI262`` exchange their connection points (deviation D4).
+5. The 30x10 ``CombiTimeTable`` literal becomes a table **read from a file**, so a schedule of
+   any length can be run without recompiling the model (deviation D9).
+6. Every actuator gains a two-point controller that can take it off the schedule: parameters
+   choose a measured signal and a hysteresis band, so a control law is a parameter set rather
+   than generated code (deviation D9).
 
 What the benchmark does not give — where along a pipe a tee sits, the length of the crossover,
 how much the leak valve throttles — is declared as parameters whose description says so.
@@ -35,16 +40,26 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from aas_fluid_twin import config  # noqa: E402
+from aas_fluid_twin.simulation.control import CONTROL_SIGNALS  # noqa: E402
+from aas_fluid_twin.simulation.schedule import ACTUATORS  # noqa: E402
 
 OUTPUT = config.FAULTCAPABLE_MODEL_FILE
+
+#: The file the simulation runner writes the actuator schedule into, next to the compiled
+#: model. The name is fixed in the model, so only its contents change from run to run — which
+#: is what makes an arbitrary schedule a parameter change rather than a rebuild.
+TABLE_FILE = "actuators.txt"
+TABLE_NAME = "actuators"
 
 HEADER = """\
 // ModVA_faultcapable — derived from the benchmark's ModVA_online_stable.mo by
 // scripts/derive_faultcapable.py (aas-fluid-mixing-twin). Do not edit by hand.
 //
 // Adds the elements the recorded faults were induced with (Tee4/V211/X203, Tee3/Tee5/V210,
-// V212 as a parameter) and corrects the TI261/TI262 placement (deviation D4). With the fault
-// handles at their defaults the model is hydraulically the upstream model.
+// V212 as a parameter), corrects the TI261/TI262 placement (deviation D4) and reads the
+// actuator table from "actuators.txt" instead of a 30-row literal (deviation D9). With the
+// fault handles at their defaults, and the embedded schedule written to that file, the model
+// behaves as the upstream one.
 """
 
 VALVE = (
@@ -266,6 +281,158 @@ def apply_crossover(source: str, volume: str = TEE_VOLUME) -> str:
     return _add_connections(s, CROSSOVER_CONNECTIONS)
 
 
+def apply_file_backed_table(source: str) -> str:
+    """Read the actuator table from a file instead of a literal (deviation D9).
+
+    The literal is 30 rows by construction, and the row count is structural: a longer schedule
+    means a recompile. Reading the same table from a file keeps the block and its settings
+    identical while making the schedule data rather than code, so replaying a recorded run
+    (40-120 switching points) or an authored one costs nothing.
+
+    ``columns`` has to be spelled out: without the literal there is nothing to infer the nine
+    actuator outputs from, and ``ActuatorControl.y[2]`` would not exist.
+
+    ``extrapolation`` changes from the block's default ``LastTwoPoints`` to ``HoldLastPoint``.
+    The upstream table starts at t = 0.667 s, and before its first row the default
+    *extrapolates the first two rows linearly*: V201's opening is -0.073 at t = 0. The nominal
+    plant tolerates that; with the V210 crossover open the flow network cannot be solved and
+    IDA stops at t = 0.657 s. Holding the first row is what a schedule means.
+    """
+    start = source.index("Modelica.Blocks.Sources.CombiTimeTable ActuatorControl(table = [")
+    end = source.index("annotation(", start)
+    declaration = (
+        "Modelica.Blocks.Sources.CombiTimeTable ActuatorControl("
+        f'tableOnFile = true, tableName = "{TABLE_NAME}", fileName = "{TABLE_FILE}", '
+        "columns = 2:10, "
+        "extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint, "
+        "timeEvents = Modelica.Blocks.Types.TimeEvents.NoTimeEvents, "
+        "smoothness = Modelica.Blocks.Types.Smoothness.ConstantSegments) "
+    )
+    return source[:start] + declaration + source[end:]
+
+
+def _control_block() -> str:
+    """Declarations for the per-actuator two-point controllers and their signal bus."""
+    n = len(ACTUATORS)
+    names = ", ".join(f'"{actuator}"' for actuator in ACTUATORS)
+    return f"""  // --- Two-point control (ModVA_faultcapable) ----------------------------------------------
+  // Each actuator either follows the schedule (mode 0) or switches on one of the measured
+  // signals below with hysteresis (mode 1). Everything here is a parameter, so a control law
+  // costs a simulation, not a recompile. The bus order is defined in
+  // src/aas_fluid_twin/simulation/control.py and generated from it.
+  constant String ctrl_actuator[{n}] = {{{names}}} "Actuator per control slot, in table order";
+  parameter Integer ctrl_mode[{n}] = zeros({n}) "0 = follow the schedule, 1 = two-point control";
+  parameter Integer ctrl_source[{n}] = ones({n}) "Index into ctrl_signal";
+  parameter Real ctrl_on_below[{n}] = fill(-Modelica.Constants.inf, {n}) "Switch on below this value (model units)";
+  parameter Real ctrl_off_above[{n}] = fill(Modelica.Constants.inf, {n}) "Switch off above this value (model units)";
+  parameter Integer ctrl_invert[{n}] = zeros({n}) "1 drives the actuator closed where it would open";
+  Real ctrl_signal[{len(CONTROL_SIGNALS)}] "The measured signals a rule may switch on";
+  Boolean ctrl_state[{n}](start = fill(false, {n})) "Latched state of each two-point controller";
+  Real ctrl_input[{n}] "The bus entry each controller reads (selected without indexing)";
+  parameter Modelica.Units.SI.Time ctrl_tau = 0.1 "Measurement lag of the controllers' inputs";
+  Real ctrl_measured[{n}] "ctrl_input through a first-order lag of ctrl_tau — a sensor's response, and what keeps the switching condition out of the hydraulic equation system";
+  Real ctrl_command[{n}] "What the controller asks of each actuator";
+"""
+
+
+def _control_initial_equations() -> str:
+    """The controllers' state at t = 0.
+
+    A ``when`` clause fires on a crossing, never on the initial value, so without this a rule
+    "open V204 below 500 ml" on a tank that *starts* at 84 ml would wait for the level to rise
+    above 500 ml and fall back — which may never happen. The state starts where the signal
+    already is: past the switch-on threshold → on; a rule with only a switch-off threshold and
+    the signal still below it → on; inside a hysteresis band → off, the resting state.
+    """
+    n = len(ACTUATORS)
+    return f"""initial equation
+  // --- Two-point control: a rule is evaluated at t = 0, not only on a crossing ------------
+  for i in 1:{n} loop
+    ctrl_measured[i] = ctrl_input[i];
+    pre(ctrl_state[i]) = ctrl_measured[i] < ctrl_on_below[i]
+      or (ctrl_on_below[i] <= -Modelica.Constants.inf
+          and ctrl_measured[i] <= ctrl_off_above[i]);
+  end for;
+"""
+
+
+def _control_equations() -> str:
+    n = len(ACTUATORS)
+    m = len(CONTROL_SIGNALS)
+    bus = ";\n    ".join(
+        f"ctrl_signal[{i + 1}] = {s.variable}" for i, s in enumerate(CONTROL_SIGNALS)
+    )
+    return f"""  // --- Two-point control ---------------------------------------------------------------
+  {bus};
+  for i in 1:{n} loop
+    // Not ``ctrl_signal[ctrl_source[i]]``: a parameter used as a subscript is evaluated at
+    // compile time and can no longer be overridden per run — every rule then silently read
+    // bus entry 1 whatever it named. The sum selects the entry with a plain comparison.
+    ctrl_input[i] = sum({{if ctrl_source[i] == k then ctrl_signal[k] else 0.0 for k in 1:{m}}});
+    // The condition is on a state, not on the algebraic pressures and flows: a switching
+    // condition inside the hydraulic equation system is a when-equation inside a non-linear
+    // system, which OpenModelica refuses to compile ("non-linear equations within
+    // when-equations"). The lag is a sensor's, and short against the plant's 1.6 s sampling.
+    der(ctrl_measured[i]) = (ctrl_input[i] - ctrl_measured[i]) / ctrl_tau;
+    when ctrl_measured[i] < ctrl_on_below[i] then
+      ctrl_state[i] = true;
+    elsewhen ctrl_measured[i] > ctrl_off_above[i] then
+      ctrl_state[i] = false;
+    end when;
+    ctrl_command[i] = if ctrl_state[i] then (if ctrl_invert[i] == 1 then 0 else 1)
+                      else (if ctrl_invert[i] == 1 then 1 else 0);
+  end for;
+"""
+
+
+def _actuator_equations() -> str:
+    """Drive each actuator from the schedule or from its controller.
+
+    The upstream model wires ``ActuatorControl.y[k]`` straight into the actuator with a
+    ``connect``; those connections are replaced by equations so the controller can take over.
+    """
+    targets = {
+        "V201": "V201.opening",
+        "V202": "V202.opening",
+        "V203": "V203.opening",
+        "V206": "V206.opening",
+        "V205": "V205.opening",
+        "V204": "V204.opening",
+        "V209": "V209.opening",
+        "P201": "P201_Characteristic.u",
+        "P202": "P202_Characteristic.u",
+    }
+    lines = []
+    for position, actuator in enumerate(ACTUATORS, start=1):
+        lines.append(
+            f"  {targets[actuator]} = if ctrl_mode[{position}] == 0 then "
+            f"ActuatorControl.y[{position}] else ctrl_command[{position}];"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def apply_two_point_control(source: str) -> str:
+    """Give every actuator a controller it can be switched over to (deviation D9)."""
+    s = source
+    for position in range(1, len(ACTUATORS) + 1):
+        s = _drop_connect_prefix(s, f"ActuatorControl.y[{position}]")
+    s = _add_declarations(s, _control_block())
+    s = _replace_once(
+        s, "\nequation\n", "\n" + _control_initial_equations() + "equation\n", "equation keyword"
+    )
+    return _add_equations(s, _control_equations() + _actuator_equations())
+
+
+def _drop_connect_prefix(source: str, first: str) -> str:
+    """Remove the connect whose first argument is ``first`` (its target varies)."""
+    marker = f"connect({first}, "
+    start = source.index(marker)
+    end = source.index(";", start) + 1
+    line_start = source.rfind("\n", 0, start) + 1
+    line_end = source.find("\n", end) + 1
+    return source[:line_start] + source[line_end:]
+
+
 def apply_temperature_placement(source: str) -> str:
     """Deviation D4: TI261 belongs at the suction manifold, TI262 in B204."""
     s = _replace_once(
@@ -292,6 +459,8 @@ def derive(upstream: str) -> str:
     s = apply_leak(s)
     s = apply_crossover(s)
     s = apply_temperature_placement(s)
+    s = apply_file_backed_table(s)
+    s = apply_two_point_control(s)
     return HEADER + s
 
 

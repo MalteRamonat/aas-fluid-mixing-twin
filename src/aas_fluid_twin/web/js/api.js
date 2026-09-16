@@ -42,6 +42,8 @@ export const api = {
     `/api/timeseries${query({ run_id: runId, channels: channels.join(",") })}`,
   timeseries: (runId, channels) => request(api.timeseriesUrl(runId, channels)),
   simulationConfig: () => request("/api/simulation/config"),
+  /** The actuator commands a recorded run was driven with, as a runnable schedule. */
+  scheduleOfRun: (runId) => request(`/api/runs/${encodeURIComponent(runId)}/schedule`),
   simulations: () => request("/api/simulations"),
   simulation: (runId) => request(`/api/simulations/${encodeURIComponent(runId)}`),
   startSimulation: (payload) =>

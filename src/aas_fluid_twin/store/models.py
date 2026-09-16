@@ -130,8 +130,12 @@ class TimeSeriesStore(Protocol):
 # --- adapters from the benchmark layer -------------------------------------------
 
 
-class WritableTimeSeriesStore(Protocol):
-    """The write side, all the simulation runner needs (``TimescaleStore`` implements both)."""
+class WritableTimeSeriesStore(TimeSeriesStore, Protocol):
+    """What the simulation runner needs: append a run, and read one back.
+
+    It reads because a recorded run can be replayed — its actuator commands become the
+    schedule of a simulation (deviation D9). ``TimescaleStore`` implements the whole protocol.
+    """
 
     def write_run(
         self,

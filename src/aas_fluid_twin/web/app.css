@@ -439,7 +439,10 @@ details summary { cursor: pointer; font-size: 12.5px; font-weight: 560; color: v
 
 @media (max-width: 1080px) {
   .layout { grid-template-columns: 1fr; height: auto; }
-  .sidebar { border-right: 0; border-bottom: 1px solid var(--border); max-height: 46vh; }
+  /* Stacked: the head (search + two rows of chips) is ~150px, so the list needs the rest of a
+     generous share — at 46vh and a 700px window only two entries were left visible. */
+  .sidebar { border-right: 0; border-bottom: 1px solid var(--border); max-height: 68vh; }
+  .run-list { min-height: 220px; }
   .content { padding: 14px; }
   .status-strip { display: none; }
 }
@@ -454,3 +457,62 @@ details summary { cursor: pointer; font-size: 12.5px; font-weight: 560; color: v
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
+
+/* ---------- schedule editor and rule builder ---------- */
+
+.check { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--text-muted); }
+.check input { width: auto; accent-color: var(--accent); }
+
+.editor-head { display: flex; align-items: center; gap: 10px; font-size: 12.5px; font-weight: 560; color: var(--text-muted); }
+.inline-number { display: flex; align-items: center; gap: 4px; font-weight: 400; font-size: 11.5px; }
+.inline-number input[type="number"] { width: 58px; padding: 3px 5px; font-size: 12px; }
+
+.sched { overflow-x: auto; padding-bottom: 4px; }
+.sched-grid {
+  display: grid;
+  grid-template-columns: 44px repeat(var(--cols), 16px);
+  gap: 2px;
+  align-items: center;
+  width: max-content;
+}
+.sched-corner, .sched-time { font-size: 10px; color: var(--text-faint); text-align: center; font-variant-numeric: tabular-nums; }
+.sched-corner { text-align: right; padding-right: 4px; }
+.sched-label { font-size: 11px; font-weight: 560; color: var(--text-muted); font-family: var(--mono); }
+.sched-cell {
+  width: 16px; height: 17px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface-2);
+  cursor: pointer;
+  touch-action: none;
+}
+.sched-cell:hover { border-color: var(--accent); }
+.sched-cell.on { background: var(--accent); border-color: var(--accent); }
+.sched-grid.locked .sched-cell { opacity: .35; cursor: not-allowed; }
+
+.rule-list { display: flex; flex-direction: column; gap: 8px; margin: 6px 0 8px; }
+.rule {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 8px;
+  align-items: center;
+  padding: 8px 9px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.rule.invalid { border-color: color-mix(in srgb, var(--danger) 45%, transparent); }
+.rule-sentence { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12.5px; line-height: 2; }
+.rule-sentence select { width: auto; max-width: 190px; padding: 3px 6px; font-size: 12px; }
+/* `input[type="number"]` above is one step more specific than a bare class, so the width
+   has to be claimed with the element name as well or every threshold fills its row. */
+input.rule-threshold {
+  width: 84px;
+  padding: 3px 6px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.rule-back { grid-column: 1 / -1; font-size: 11.5px; line-height: 1.8; }
+.rule-back input.rule-threshold { width: 70px; }
+.rule-error { grid-column: 1 / -1; margin: 0; font-size: 11.5px; color: var(--danger); }

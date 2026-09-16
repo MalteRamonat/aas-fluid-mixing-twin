@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from aas_fluid_twin.api.aas_metadata import (
     ChannelInfo,
+    ControlSignalInfo,
     ModelVersionInfo,
     ParameterInfo,
     ScheduleInfo,
@@ -17,6 +18,7 @@ from aas_fluid_twin.store.models import RunRecord, SeriesResult
 __all__ = [
     "AasOut",
     "ChannelOut",
+    "ControlSignalOut",
     "FaultWindowOut",
     "ModelVersionOut",
     "ParameterOut",
@@ -151,6 +153,14 @@ class ModelVersionOut(BaseModel):
     notes: str | None
 
 
+class ControlSignalOut(BaseModel):
+    key: str
+    label: str
+    unit: str | None
+    variable: str
+    index: int
+
+
 class SimulationConfigOut(BaseModel):
     """Everything the dashboard needs to render the run form."""
 
@@ -163,6 +173,8 @@ class SimulationConfigOut(BaseModel):
     schedules: list[ScheduleOut]
     model_versions: list[ModelVersionOut]
     operation_defaults: dict[str, str]
+    control_signals: list[ControlSignalOut]
+    control_actuators: list[str]
 
 
 class SimulationRequestIn(BaseModel):
@@ -175,6 +187,7 @@ class SimulationRequestIn(BaseModel):
     tolerance: float = Field(default=1e-5, gt=0, lt=1)
     schedule: str | list[dict[str, float]] = "EmbeddedDefault"
     parameter_overrides: dict[str, float | bool] = Field(default_factory=dict)
+    control_rules: list[dict[str, object]] = Field(default_factory=list)
     model: str | None = None
     label: str | None = Field(default=None, max_length=200)
 
@@ -229,4 +242,14 @@ def model_version_out(info: ModelVersionInfo) -> ModelVersionOut:
         version_id=info.version_id,
         file=info.file,
         notes=info.notes,
+    )
+
+
+def control_signal_out(info: ControlSignalInfo) -> ControlSignalOut:
+    return ControlSignalOut(
+        key=info.key,
+        label=info.label,
+        unit=info.unit,
+        variable=info.variable,
+        index=info.index,
     )

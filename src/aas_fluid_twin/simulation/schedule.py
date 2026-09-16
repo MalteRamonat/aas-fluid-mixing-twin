@@ -8,10 +8,12 @@ lands on V209, P202 lands on P201, and P202 keeps whatever the embedded table ha
 schedule is keyed by actuator **name** and laid out into the table by name, so the CSV is
 driven the way its header says.
 
-The table's shape is structural in the exported FMU (30 rows, 10 columns), so schedules with
-more rows are refused (deviation D2 — upstream truncates silently) and shorter ones are padded
-with copies of the last row at strictly increasing times, which leaves the trajectory
-unchanged under ``ConstantSegments``.
+A schedule may be any length. The fault-capable model reads its table from a file, so the row
+count is data (deviation D9); only the fixed 30x10 literal — the upstream model and the FMU
+built from it — still constrains it, and :meth:`ActuatorSchedule.as_fixed_table` is the one
+place that limit is enforced. Short schedules are padded there with copies of the last row at
+strictly increasing times, which leaves the trajectory unchanged under ``ConstantSegments``;
+longer ones are refused rather than truncated (deviation D2 — upstream truncates silently).
 """
 
 from __future__ import annotations
@@ -81,11 +83,6 @@ class ActuatorSchedule:
     def __post_init__(self) -> None:
         if not self.rows:
             raise ValueError(f"schedule {self.name!r} has no rows")
-        if len(self.rows) > TABLE_ROWS:
-            raise ValueError(
-                f"schedule {self.name!r} has {len(self.rows)} rows; the model's table holds "
-                f"{TABLE_ROWS}. Split the run or coarsen the schedule."
-            )
         times = [row.time for row in self.rows]
         if any(b <= a for a, b in pairwise(times)):
             raise ValueError(f"schedule {self.name!r}: times must be strictly increasing")
@@ -98,19 +95,32 @@ class ActuatorSchedule:
         return self.rows[-1].time
 
     def table(self) -> list[list[float]]:
-        """The 30×10 table in the model's column order, padded as described in the module."""
-        out = [[row.time, *(row.value(a) for a in ACTUATORS)] for row in self.rows]
+        """The schedule in the model's column order, one row per switching time."""
+        return [[row.time, *(row.value(a) for a in ACTUATORS)] for row in self.rows]
+
+    def as_fixed_table(self) -> list[list[float]]:
+        """The same schedule shaped for a model whose table is a fixed 30×10 literal.
+
+        That is the upstream model and the FMU exported from it. The fault-capable model reads
+        its table from a file and has no such limit, so this is where the limit lives.
+        """
+        if len(self.rows) > TABLE_ROWS:
+            raise ValueError(
+                f"schedule {self.name!r} has {len(self.rows)} rows; this model's table holds "
+                f"{TABLE_ROWS}. Run it on ModVA_faultcapable, which reads its table from a "
+                f"file, or coarsen the schedule."
+            )
+        out = self.table()
         last = out[-1]
-        step = 1.0
         while len(out) < TABLE_ROWS:
-            out.append([out[-1][0] + step, *last[1:]])
+            out.append([out[-1][0] + 1.0, *last[1:]])
         return out
 
     def start_values(self, block: str = "ActuatorControl") -> dict[str, float]:
-        """``{"ActuatorControl.table[i,j]": value}`` — what the runners hand to the model."""
+        """``{"ActuatorControl.table[i,j]": value}`` — for a fixed-table model only."""
         return {
             f"{block}.table[{i},{j}]": value
-            for i, row in enumerate(self.table(), start=1)
+            for i, row in enumerate(self.as_fixed_table(), start=1)
             for j, value in enumerate(row, start=1)
         }
 
@@ -146,6 +156,56 @@ class ActuatorSchedule:
             )
         unspecified = tuple(a for a in ACTUATORS if a not in header)
         return cls(name or path.stem, rows, unspecified)
+
+    @classmethod
+    def from_recorded(
+        cls,
+        name: str,
+        times: Sequence[float],
+        columns: Mapping[str, Sequence[float | None]],
+        actuator_of: Mapping[str, str],
+        *,
+        threshold: float = 0.5,
+    ) -> tuple[ActuatorSchedule, list[str]]:
+        """Reconstruct the schedule a recorded run was driven with.
+
+        ``columns`` is the run as the store returns it and ``actuator_of`` maps each recorded
+        channel onto a model actuator. Only switching points are kept — the recording samples
+        every ~1.6 s, while the commands change a few dozen times in 600 s — and the states are
+        quantised, because a valve command is open or shut and a fractional value in the file
+        is a sampling artefact.
+
+        Returns the schedule and the notes a caller should show with it: what was left out and
+        what the model will ignore.
+        """
+        notes: list[str] = []
+        usable = {channel: actuator_of[channel] for channel in columns if channel in actuator_of}
+        missing = [a for a in ACTUATORS if a not in usable.values()]
+        if missing:
+            notes.append(
+                f"not recorded in this run, so driven closed: {', '.join(sorted(missing))}"
+            )
+        ignored = [c for c in columns if c not in actuator_of]
+        if ignored:
+            notes.append(f"recorded but not an actuator of the model: {', '.join(sorted(ignored))}")
+
+        rows: list[ScheduleRow] = []
+        current: dict[str, float] = {}
+        for index, time in enumerate(times):
+            state = dict(current)
+            for channel, actuator in usable.items():
+                value = columns[channel][index]
+                if value is not None:  # a gap keeps the last commanded state
+                    state[actuator] = 1.0 if float(value) >= threshold else 0.0
+            if not rows or state != current:
+                rows.append(ScheduleRow(float(time), state))
+                current = state
+        if not rows:
+            raise ValueError(f"{name}: the run has no actuator samples to read a schedule from")
+        if rows[0].time > 0:
+            rows.insert(0, ScheduleRow(0.0, dict(rows[0].values)))
+        notes.append(f"{len(rows)} switching points read from {len(times)} samples")
+        return cls(name, tuple(rows), tuple(missing)), notes
 
     @classmethod
     def from_json(cls, text: str, name: str = "inline") -> ActuatorSchedule:

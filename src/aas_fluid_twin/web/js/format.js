@@ -19,7 +19,8 @@ export const scenarioLabel = (scenario) =>
 /** Chart groups. One chart per group, because one chart per unit is what an axis can honestly show. */
 const GROUPS = [
   { id: "volume", title: "Tank volumes", unit: "ml", match: (c) => c.unit === "ml" },
-  { id: "level", title: "Levels", unit: "cm", match: (c) => c.unit === "cm" },
+  { id: "level_mm", title: "Levels (ultrasonic)", unit: "mm", match: (c) => c.unit === "mm" },
+  { id: "level", title: "Levels (derived)", unit: "cm", match: (c) => c.unit === "cm" },
   { id: "pressure", title: "Pressures", unit: "kPa", match: (c) => c.unit === "kPa" },
   { id: "flow", title: "Flows", unit: "l/min", match: (c) => c.unit === "l/min" },
   { id: "temperature", title: "Temperatures", unit: "°C", match: (c) => c.unit === "°C" },
@@ -97,6 +98,13 @@ export function formatTimestamp(iso) {
 /** Presets are named by what a reader wants to see, not by what the channels are called. */
 export const PRESETS = [
   { id: "volumes", label: "Tank volumes", channels: (all) => pick(all, /_Volume$/) },
+  {
+    id: "levels",
+    label: "Tank levels",
+    // The ultrasonic sensors' own reading (millimetres — deviation D10). The levels derived
+    // from the volume and from the pressures stay selectable in the channel list.
+    channels: (all) => pick(all, /^Tank_B20[1-4]_level_calculated_via_LI21[1-4]$/),
+  },
   {
     id: "cycle",
     label: "Dosing cycle",

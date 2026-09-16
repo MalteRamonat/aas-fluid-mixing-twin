@@ -24,10 +24,10 @@ import os
 import queue
 import threading
 import uuid
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Any, Literal
+from typing import Any, Final, Literal
 
 from basyx.aas import model
 from basyx.aas.model import datatypes
@@ -45,24 +45,29 @@ from aas_fluid_twin.aas.builders.time_series import (
 )
 from aas_fluid_twin.aas.semantics import semantic
 from aas_fluid_twin.benchmark.modelica import load_modelica_model
-from aas_fluid_twin.benchmark.signals import load_signal_dictionary
+from aas_fluid_twin.benchmark.signals import Role, SignalDictionary, load_signal_dictionary
 from aas_fluid_twin.client import BasyxClient, BasyxError
+from aas_fluid_twin.simulation.control import ControlRule, control_parameters
 from aas_fluid_twin.simulation.mapping import ChannelMapping, build_channel_mapping
 from aas_fluid_twin.simulation.runner import (
     TESTED_SOLVER,
+    IntegrationStoppedError,
     SimulationError,
     SimulationRequest,
     SimulationResult,
     SimulationRunner,
     resolve_parameters,
 )
-from aas_fluid_twin.simulation.schedule import ActuatorSchedule
+from aas_fluid_twin.simulation.schedule import ACTUATORS, ActuatorSchedule
 from aas_fluid_twin.store.models import Origin, RunRecord, SampleRow, WritableTimeSeriesStore
 from aas_fluid_twin.store.timescale import TimescaleStore
 
 __all__ = ["JobStore", "RunSpec", "create_app", "operation_variables", "parse_operation_variables"]
 
 log = logging.getLogger("sim-runner")
+
+#: The one tolerance a run that stopped early is retried at (the default is 1e-5).
+RETRY_TOLERANCE: Final[float] = 1e-6
 
 JobStatus = Literal["queued", "running", "completed", "failed"]
 
@@ -91,6 +96,10 @@ class RunSpec(BaseModel):
         description="idShort of an ActuatorSchedules entry, or inline rows keyed by actuator",
     )
     parameter_overrides: dict[str, float | bool] = Field(default_factory=dict)
+    control_rules: list[dict[str, Any]] = Field(
+        default_factory=list,
+        description="Two-point control rules; each takes one actuator off the schedule",
+    )
     model: str | None = Field(
         default=None,
         description="model version to run; None takes the service default (SIM_MODEL)",
@@ -120,6 +129,8 @@ class RunSpec(BaseModel):
             raw["model"] = values["model"].strip()
         if values.get("label", "").strip():
             raw["label"] = values["label"].strip()
+        if values.get("controlRules", "").strip():
+            raw["control_rules"] = json.loads(values["controlRules"])
         return cls(**raw)
 
 
@@ -137,6 +148,8 @@ class Job:
     record_count: int | None = None
     wall_time_s: float | None = None
     aas_note: str | None = None
+    note: str | None = None
+    """Something the runner decided on the way — a retry, for instance. Travels with the run."""
     scenario: str = "normal_behaviour"
     anomaly_label: int = 0
     model: str = ""
@@ -157,6 +170,7 @@ class Job:
             "anomaly_label": self.anomaly_label,
             "model": self.model,
             "aas_note": self.aas_note,
+            "note": self.note,
             "spec": self.spec.model_dump(),
         }
 
@@ -296,6 +310,16 @@ class JobStore:
         else:
             schedule = ActuatorSchedule.from_json(json.dumps(spec.schedule), name="inline")
         parameters = resolve_parameters(spec.parameter_overrides, runner.parameter_names())
+        if spec.control_rules:
+            rules = [ControlRule(**rule) for rule in spec.control_rules]
+            control = control_parameters(rules)
+            missing = [name for name in control if name not in runner.parameter_names()]
+            if missing:
+                raise SimulationError(
+                    "this model version has no two-point control; run the rules on "
+                    "ModVA_faultcapable"
+                )
+            parameters = {**parameters, **control}
         return SimulationRequest(
             schedule=schedule,
             outputs=mapping.variables,
@@ -325,7 +349,22 @@ class JobStore:
     def _execute(self, job: Job) -> None:
         job.status, job.started_at, job.progress = "running", datetime.now(), 0.05
         _, runner, mapping = self.runner_for(job.spec.model)
-        result = runner.run(self._to_request(job.spec))
+        try:
+            result = runner.run(self._to_request(job.spec))
+        except IntegrationStoppedError as stopped:
+            # IDA occasionally gives up an event or two after a controller switches (seen at
+            # t ≈ 102 s of the default schedule with a level rule on V204) and survives the
+            # same run at a tighter tolerance. One retry, recorded on the run — not hidden.
+            if job.spec.tolerance <= RETRY_TOLERANCE:
+                raise
+            log.warning("%s: %s — retrying with tolerance %g", job.run_id, stopped, RETRY_TOLERANCE)
+            job.spec = job.spec.model_copy(update={"tolerance": RETRY_TOLERANCE})
+            job.note = (
+                f"{job.spec.solver} stopped at t = {stopped.reached:.4g} s at the requested "
+                f"tolerance; retrying with tolerance {RETRY_TOLERANCE:g}"
+            )
+            result = runner.run(self._to_request(job.spec))
+            job.note = job.note.replace("retrying with", "completed on a retry with")
         job.progress, job.wall_time_s = 0.6, result.wall_time_s
 
         channels = mapping.convert(result.variables)
@@ -350,6 +389,8 @@ class JobStore:
                 "output_interval": job.spec.output_interval,
                 "schedule": job.spec.schedule,
                 "parameter_overrides": job.spec.parameter_overrides,
+                "control_rules": job.spec.control_rules,
+                "note": job.note,
             },
         )
         job.record_count = len(result)
@@ -498,7 +539,58 @@ def _default_runners() -> dict[str, SimulationRunner]:
         raise SystemExit(f"unknown SIM_BACKEND {backend!r}; use openmodelica or fmpy")
     from aas_fluid_twin.simulation.om_runner import OmRunner, worker_models
 
-    return {name: OmRunner(model=name) for name in worker_models()}
+    wait_s = float(os.environ.get("SIM_WORKER_WAIT_S", "600"))
+    return {name: OmRunner(model=name) for name in worker_models(wait_s=wait_s)}
+
+
+#: Recorded volume per tank, and the ``level_start`` parameter it initialises.
+TANK_VOLUME_CHANNELS: Mapping[str, str] = {
+    f"Tank_B20{i}_Volume": f"tank_B20{i}_level_start" for i in (1, 2, 3, 4)
+}
+
+
+def initial_levels(columns: Mapping[str, Sequence[float | None]]) -> dict[str, float]:
+    """Where each tank stood when the recording started, as model parameters.
+
+    From the recorded **volume** and the model's own cross-section, not from the
+    ``level_calculated_via_LI21x`` channels: those read about ten times the tank's height in
+    the unit the mapping table declares, which is an open question with the plant author
+    (deviation D10), and the volume channels agree with the model's geometry.
+    """
+    model = load_modelica_model()
+    out: dict[str, float] = {}
+    for channel, parameter in TANK_VOLUME_CHANNELS.items():
+        values = [v for v in columns.get(channel, []) if v is not None]
+        if not values:
+            continue
+        tank = f"tank_B20{channel[len('Tank_B20')]}"
+        area = model.declarations[tank].modifiers.get("crossArea")
+        height = model.declarations[tank].modifiers.get("height")
+        if not area:
+            continue
+        level = (float(values[0]) * 1e-6) / float(area)  # ml -> m3 -> m
+        if height and not 0.0 <= level <= float(height):
+            continue  # a reading the tank cannot hold is not worth passing on
+        out[parameter] = round(level, 5)
+    return out
+
+
+def actuator_channels(signals: SignalDictionary) -> dict[str, str]:
+    """Recorded channel -> model actuator, taken from the signal dictionary's Modelica names.
+
+    ``Valve_V201_opening`` drives ``V201.opening`` and therefore actuator ``V201``; the pumps
+    arrive through their characteristic block (``P201_Characteristic.u``). A channel with no
+    Modelica variable — the stirrer R201 — has no actuator and is reported as ignored.
+    """
+    out: dict[str, str] = {}
+    for signal in signals:
+        if signal.role is not Role.ACTUATOR or not signal.sim_variable:
+            continue
+        head = signal.sim_variable.split(".", 1)[0]
+        actuator = head.removesuffix("_Characteristic")
+        if actuator in ACTUATORS:
+            out[signal.channel] = actuator
+    return out
 
 
 def _default_schedules() -> dict[str, ActuatorSchedule]:
@@ -623,6 +715,40 @@ def create_app(jobs: JobStore | None = None) -> FastAPI:
     @app.get("/schedules")
     def schedules() -> dict[str, list[dict[str, float]]]:
         return {name: s.to_json() for name, s in app.state.jobs.schedules.items()}
+
+    @app.get("/schedules/from-run/{run_id}")
+    def schedule_from_run(run_id: str) -> dict[str, Any]:
+        """The actuator commands a recorded run was driven with, as a runnable schedule."""
+        active: JobStore = app.state.jobs
+        if active.store is None:
+            raise HTTPException(status_code=503, detail="no time-series store configured")
+        mapping = actuator_channels(load_signal_dictionary())
+        series = active.store.query(run_id, sorted(mapping) + sorted(TANK_VOLUME_CHANNELS))
+        if series is None:
+            raise HTTPException(status_code=404, detail=f"unknown run {run_id!r}")
+        try:
+            schedule, notes = ActuatorSchedule.from_recorded(
+                run_id,
+                series.t_rel_s,
+                {c: v for c, v in series.channels.items() if c in mapping},
+                mapping,
+            )
+        except ValueError as error:
+            raise HTTPException(status_code=422, detail=str(error)) from error
+        initial = initial_levels(series.channels)
+        if initial:
+            notes.append(
+                "initial tank levels taken from the run's first volume samples; without them "
+                "the model starts from its own and the replay diverges"
+            )
+        return {
+            "source_run": run_id,
+            "name": f"replay of {run_id}",
+            "rows": schedule.to_json(),
+            "end_time_s": schedule.end_time,
+            "initial_state": initial,
+            "notes": notes,
+        }
 
     return app
 

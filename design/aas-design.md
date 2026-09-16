@@ -906,11 +906,18 @@ post-processing writes simulated temperatures into the wrong columns) and **D5**
 table declares bar and °C for the Modelica pressure and temperature sensors, which output Pa
 and K, so the published clear-name simulation result is mis-scaled on those columns).
 
-**Nothing else is open.** The design above is fully specified against the plant.
+**O13 — resolved 2026-09-16.** The four `Tank_B20x_level_calculated_via_LI21x` channels are
+declared in centimetres but read about ten times the tank's height — ≈ 9.9 times the
+volume-derived level channel in every tank and run. The plant author confirmed, on an overlay
+plot of three normal runs, that the ultrasonic reading is in **millimetres**. It is now a
+declared `Correction` in `benchmark/signals.py` (deviation **D10**); the AAS, the dashboard and
+the conversion of the model's `LI21x.y` follow from the dictionary.
+
+**Nothing is open.** The design above is fully specified against the plant.
 
 ---
 
-## 12. Driving the simulated plant from the dashboard (implementation step 8)
+## 12. Driving the simulated plant from the dashboard (implementation step 8 — built 2026-09-15)
 
 Four capabilities are wanted, in rising order of ambition:
 
@@ -947,12 +954,13 @@ before each run and passes the path. A schedule of any length then costs nothing
 limit disappears, and the file is an artefact that can be attached to the run's
 `ExternalSegment` — the schedule a run used stays reproducible from the AAS alone.
 
-*Risk and fallback.* String parameters must be settable without a recompile; that is the one
-thing to prove first (a ten-minute experiment in the worker). If OpenModelica insists on a
-rebuild for a `String` parameter, the fallback is a fixed table of 400 rows whose cells are set
-as `table[i,j]` parameters, exactly as today — 4000 parameter writes per run, slower but
-unchanged in behaviour. Either way the embedded 30-row default is kept as `EmbeddedDefault`,
-so the published model's own behaviour stays reproducible.
+*What was actually built.* No string parameter is needed: the file **name** is fixed in the
+model and only its contents change, so the runner writes `actuators.txt` into the model's build
+directory before each run and nothing is parameterised at all. `columns = 2:10` must be
+declared explicitly, since without a literal there is nothing to infer the nine outputs from.
+Proven before adoption: the embedded default written to the file reproduces the literal
+exactly, a different file changes the run with the same binary, and a 200-row table works.
+See deviation D9.
 
 ### 12.2 Replaying a recorded dataset (capability 2)
 
@@ -969,7 +977,8 @@ rather than hidden:
 
 * the channels are **commands as the PLC logged them**, sampled every ~1.6 s, so the replay
   reproduces the commanded sequence, not the plant's response;
-* `V209` is in the model but not in the recorded data — it is declared explicitly as closed;
+* `V209` **is** recorded (only the benchmark's `ActuatorControlMatrix` CSV omits it), so it
+  replays like the others; an actuator genuinely absent from a run is reported and driven closed;
 * `R201` (the stirrer) is recorded but not modelled hydraulically (design §5.3), so it is
   carried in the schedule and ignored by the model, which the preview states.
 

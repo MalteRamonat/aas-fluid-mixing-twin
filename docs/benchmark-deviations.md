@@ -294,7 +294,12 @@ replacements, each of which must match exactly once, so the diff is exactly this
 
 1. `V207` — pinned to `opening = 1` in the upstream equation section and sitting in exactly the
    B204 → P202 line where the physical throttle was installed — becomes **`V212`**, driven by
-   the parameter `V212_opening` (default `1` = fully open). *Clogging.*
+   the parameter `V212_opening` (default `1` = fully open). *Clogging.* Its declared range is
+   **0.01 … 1**, not 0 … 1: with the throttle fully shut the initialisation problem has no
+   solution (`Solving non-linear system 953 failed at time=0`) and the run produces nothing,
+   while 0.01 initialises and the recorded clogging runs only ever partially close the valve.
+   The range is declared once (`simulation/runner.PARAMETER_BOUNDS`), published as the AAS
+   `ValueRange`, and enforced by the runner, so a request outside it is refused with the reason.
 2. **`Tee4`** splits the `FI271` → B204 riser at `Tee4_position`; from it `pipe_Tee4_V211` →
    **`V211`** (`V211_opening`, default `0` = closed) → `Junction_V211` → two complementary
    switch valves into either the new boundary **`X203`** or, via `pipe_V211_B201`, B201's
@@ -328,6 +333,183 @@ faults, not hydraulic ones (design §5.3).
 
 `python scripts/derive_faultcapable.py --check` fails if the checked-in file is no longer
 what the script produces from the current upstream model.
+
+---
+
+## D9 — The actuator table is fixed at compile time, so the model can only be driven 30 steps
+
+**Status:** fixed in the fault-capable model version. The upstream model is unchanged.
+
+**Evidence.** `ModVA_online_stable.mo` drives everything from
+
+```modelica
+Modelica.Blocks.Sources.CombiTimeTable ActuatorControl(table = [0.666854, 0.0, …; 600.0, …])
+```
+
+a literal of **30 rows by 10 columns**. The row count is structural: Modelica sizes the block
+from the literal, so a longer schedule is a recompile, not a parameter change. That is the
+root of deviation D2 (the upstream loader silently truncates at 30 rows) and it makes two
+ordinary things impossible:
+
+* **replaying a recorded run** — `dataset_10_leakage` switches its actuators **44 times** in
+  600 s, and a typical run 40–120 times;
+* **writing a schedule by hand** at any useful resolution — 30 rows over 600 s is one change
+  every 20 s.
+
+**Fix here — the table comes from a file.** In `ModVA_faultcapable` the literal is replaced by
+
+```modelica
+Modelica.Blocks.Sources.CombiTimeTable ActuatorControl(
+  tableOnFile = true, tableName = "actuators", fileName = "actuators.txt", columns = 2:10,
+  extrapolation = …HoldLastPoint, timeEvents = …NoTimeEvents, smoothness = …ConstantSegments)
+```
+
+and the simulation runner writes `actuators.txt` into the model's own build directory before
+each run. The block and its column order are otherwise untouched; one setting changes.
+
+* `columns = 2:10` has to be spelled out: without a literal there is nothing to infer the nine
+  actuator outputs from, and `ActuatorControl.y[2]` would not exist. (The first attempt left it
+  out and the model failed to build — the error names the connect, not the cause.)
+* `extrapolation = HoldLastPoint` replaces the block's default `LastTwoPoints`. The upstream
+  table's first row is at **t = 0.667 s**, and before it the default extrapolates the first two
+  rows *linearly backwards*: `V201.opening` is **−0.073 at t = 0** (the solver log reports the
+  violated `0 ≤ opening ≤ 1` assertion at every start). The nominal plant absorbs that; with
+  the V210 crossover open the flow network has no solution and IDA stops at t = 0.657 s — for
+  every opening, and only with the embedded table, since a schedule that starts at t = 0 has
+  nothing to extrapolate. Holding the first row is what a schedule means; a latent defect of
+  the upstream model, fatal only in the derived one.
+* Verified three ways before adopting it: the embedded 30-row default written to the file
+  reproduces the literal (`tank_B201.V` at t = 100 s is `8.425508e-05` either way, also after
+  the extrapolation change); a **different file simulated with the same binary** changes the
+  result, so no recompile is involved; and a 200-row table runs.
+* The FMU and the upstream model still have the fixed literal, so `ActuatorSchedule.as_fixed_table`
+  keeps the 30-row limit exactly where it still applies — and refuses rather than truncating.
+
+**Replaying a recorded run** (`GET /api/runs/{id}/schedule`) compresses the run's actuator
+channels to switching points and quantises them: a valve command is open or shut, and a
+fractional value in a 1.6 s sample is an artefact. Two things are reported with the result
+rather than hidden:
+
+* the recording carries **commands**, so a replay reproduces what the plant was *told* to do,
+  not how it responded;
+* the tanks must start where the recording started — the initial levels come from the run's
+  first **volume** samples and the model's own cross-sections, because the
+  `level_calculated_via_LI21x` channels are an open question (D10). Without them the replay
+  diverges within a minute.
+
+Even then, a replayed command sequence is open loop: the model's flows differ slightly from
+the plant's, so a tank can reach a limit the real one never did. Replaying
+`dataset_10_leakage` fills B201 to its 3149 ml brim at t ≈ 118 s and the integrator stops —
+reported, not hidden, by the runner's own check that a result reaches its stop time. Which is
+the argument for the second half of this deviation.
+
+**Fix here — two-point control, as parameters.** Every actuator in `ModVA_faultcapable` gains
+a controller it can be switched to:
+
+```modelica
+parameter Integer ctrl_mode[9]   "0 = follow the schedule, 1 = two-point control";
+parameter Integer ctrl_source[9] "index into the measured-signal bus";
+parameter Real ctrl_on_below[9], ctrl_off_above[9], ctrl_invert[9];
+V201.opening = if ctrl_mode[1] == 0 then ActuatorControl.y[1] else ctrl_command[1];
+```
+
+with a 16-entry bus of the model's own measurements (tank volumes and levels, both flows, the
+four pressures, both temperatures) and one latched hysteresis state per actuator. The nine
+`connect(ActuatorControl.y[k], …)` equations are replaced by the equations above — with the
+connects left in place both would drive the same input.
+
+Everything is a *parameter*, so a control law costs a simulation rather than a build, exactly
+like the fault handles. Thresholds are written in the plant's units (ml, cm, kPa, °C, l/min)
+and converted with `simulation/units.py`, so the dashboard asks for "2000 ml" and not
+"0.002 m³". The same replay that overfilled B201 completes when V204 is given
+*open below 500 ml, close above 2000 ml*: B201 then peaks at exactly 2000 ml.
+
+Five details of the controller that were settled by using it, not by designing it:
+
+* **The signal is selected, not indexed.** The first version read
+  `ctrl_signal[ctrl_source[i]]`; a parameter used as a subscript is evaluated at compile
+  time, so `ctrl_source` could not be overridden per run and *every rule read bus entry 1*
+  (B201's volume) whatever it named — invisible while every test used exactly that entry.
+  Now `ctrl_input[i] = sum({if ctrl_source[i] == k then ctrl_signal[k] else 0 for k in 1:16})`.
+* **The switching condition is on a filtered state.** With the selection above the condition
+  depends on pressures and flows, which sit in the same non-linear system as the valve
+  openings the rule drives; OpenModelica refuses that ("non-linear equations within
+  when-equations"). `ctrl_measured[i]` follows `ctrl_input[i]` through a first-order lag
+  `ctrl_tau = 0.1 s` — a sensor's response, short against the plant's 1.6 s sampling — and
+  the `when` reads that.
+
+* **A rule is evaluated at t = 0.** A Modelica `when` fires on a crossing, never on the initial
+  value, so the first version of *open V204 below 500 ml* on a tank that *started* at 84 ml
+  waited for the level to rise past 500 ml and fall back — which never happened. An
+  `initial equation` now sets each controller's state from where its signal already is: past
+  the switch-on threshold → on; inside the band → off, the resting state.
+* **Equal thresholds are refused — they chatter.** They were allowed for an evening: *keep
+  V201 open while B201 holds more than 100 ml* reads like a comparator. But a comparator
+  toggles at every solver step once the level settles on its threshold, each toggle is an
+  event and a restart of a 2 000-variable DAE, and eight such rules (fill below 15 cm, drain
+  above 1 cm, on every tank) turned a 600 s run into one that hit the worker's 15-minute cap.
+  A rule needs a band; the dashboard proposes 5 % of the threshold and lets it be widened.
+* **"No threshold on this side" travels as the largest finite double**, which is what
+  `Modelica.Constants.inf` is (1.797…e308). `inf` itself is not JSON, and the first one-sided
+  rule died in the request to the worker before it ran.
+
+**Assumptions and limits, stated plainly:**
+
+| | |
+| --- | --- |
+| One rule per actuator | A second rule for the same actuator is a contradiction, not an addition, and is refused. |
+| Two-point only | On/off with hysteresis, which is what this plant's valves and pumps are. Continuous control of the pumps' speed would be the same block with a proportional term; it is not built. |
+| No sequences | The plant's PLC runs a step chain (`Dosieren` → `Feindosierung` → …). That needs state that persists across conditions — a generated `StateGraph` and therefore a recompile per rule set. Deliberately out of scope; the PLC program is documented in the AAS, not executed. |
+| The signal bus order is an interface | A rule stores an index, so `CONTROL_SIGNALS` is append-only; a test pins the model's `ctrl_signal[i]` against it. |
+| IDA is occasionally fragile after a controller event | A V204 level rule on a B201 that starts near empty stops the integrator at t ≈ 102 s of the default schedule; the same trajectory driven by the schedule completes, IDA's runtime flags change nothing, DASSL chatters at P202's check valve, and tolerance 1e-6 completes it. The runner retries such a run **once** at 1e-6 and records that on the run (`note`) rather than changing the default tolerance or hiding the retry. |
+| Many events are slow | Every switch of a two-point controller is a solver restart. Rules that fight each other (fill below 15 cm *and* drain above 1 cm on the same tank) switch every second or two once the level reaches the band and cost several times the nominal run time; `-abortSlowSimulation` does not catch that (the events are not dense enough to count as chattering). The worker kills a simulation after 900 s of wall time and says why. |
+
+The vocabulary — which signals exist, in which unit, and which actuators can be controlled —
+is published in `SimulationControl/ControlModes`, and the rules of a run are recorded with it
+in `Runs/<run>/ParametersUsed`. A consumer reading only the AAS can write a valid rule.
+
+---
+
+## D10 — The ultrasonic level channels are millimetres declared as centimetres
+
+**Status: confirmed by the plant author on 2026-09-16 and corrected.** The four
+`Tank_B20x_level_calculated_via_LI21x` channels carry the unit **mm** in this project — a
+declared `Correction` in `benchmark/signals.py`, like the row-39 fix (N2). The mapping table
+itself is not edited. The AAS (`AssetInterfacesDescription`, concept descriptions, `TwinLinkage`
+conversion), the dashboard's channel metadata and the conversion of the model's `LI21x.y` all
+follow from the dictionary, so they changed with it; the instrument span in the AID is now the
+datasheet's own 70 … 1000 mm rather than a centimetre rendering of it. Simulated runs stored
+before the correction had their four LI columns rescaled in the store; their CSV attachments in
+the AAS still show the old centimetre values in those columns.
+
+The evidence that led to the question is kept below as written; the picture that settled it is
+the same for `dataset_1`, `_20` and `_30`: the LI channel divided by ten lies exactly on the
+volume-derived level and on the recorded volume divided by the model's cross-section.
+
+**Evidence.** The four `Tank_B20x_level_calculated_via_LI21x` channels are declared **cm** in
+`Simulation_Variable_Mapping.xlsx`, but their values cannot be centimetres:
+
+| Channel | Range in `dataset_10_leakage` | Tank height |
+| --- | --- | --- |
+| `Tank_B201_level_calculated_via_LI211` | −1.1 … 149.6 | 22 cm |
+| `Tank_B201_level_calculated_via_VolumeB201` | −0.04 … 15.1 | 22 cm |
+| `Tank_B204_level_calculated_via_LI214` | −3.0 … 160.7 | 35 cm |
+
+The LI-derived channel is consistently **≈ 9.9 times** the volume-derived one — median ratio
+9.84 … 9.92 across all four tanks in `dataset_1_normal_behaviour` and `dataset_10_leakage`,
+computed over every sample where the tank holds more than 2 cm. A factor of ten with a ~1 %
+spread reads as *millimetres declared as centimetres*, with the residual coming from the two
+channels' different calibration constants.
+
+**Why it matters.** The model's `LI21x.y` is a level in metres, so a simulated run publishes
+this channel in centimetres while a recorded run publishes it in millimetres: the dashboard
+would overlay them ten times apart, and any real-versus-simulation comparison on those four
+channels would be wrong. The volume-derived level channels do not have the problem, which is
+why the replay's initial state is taken from the volume channels.
+
+**Why it was not changed on inference alone.** Correcting a declared unit is a plant fact,
+and the project's rule is that plant facts come from the plant. The question was put to the
+author with the overlay plot; the answer was yes.
 
 ---
 

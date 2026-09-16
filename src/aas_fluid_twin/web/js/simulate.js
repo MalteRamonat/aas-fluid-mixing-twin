@@ -4,6 +4,12 @@
 
 import { api } from "./api.js";
 import { formatDuration } from "./format.js";
+import { RuleBuilder } from "./rules.js";
+import { ScheduleEditor, pickRecordedRun } from "./schedule.js";
+
+//: The two schedule sources that are not a stored AAS schedule.
+const REPLAY = "__replay__";
+const CUSTOM = "__custom__";
 
 const FAULT_TITLES = {
   leakage: "Leakage",
@@ -13,15 +19,43 @@ const FAULT_TITLES = {
 };
 
 export class SimulationPanel {
-  constructor(elements, { onRunFinished, onStatus }) {
+  constructor(elements, { onRunFinished, onStatus, runsProvider }) {
     this.el = elements;
     this.onRunFinished = onRunFinished;
     this.onStatus = onStatus;
+    this.runsProvider = runsProvider ?? (() => []);
     this.config = null;
     this.watching = new Map(); // run_id -> job json
     this.timer = null;
+    this.runs = [];
+    this.replayInitialState = {};
+    this.rules = [];
+    this.editor = new ScheduleEditor(this.el.editor, {
+      onChange: () => this.el.error.hidden = true,
+    });
+    this.ruleBuilder = new RuleBuilder(this.el.rules, {
+      onChange: (rules) => {
+        this.rules = rules;
+        this.markControlledActuators();
+      },
+    });
 
     this.el.form.addEventListener("submit", (event) => this.submit(event));
+    this.el.form.addEventListener("invalid", (event) => this.reportInvalid(event.target), true);
+    this.el.clearSchedule.addEventListener("click", () => {
+      this.editor.clear();
+      this.markControlledActuators();
+    });
+    for (const [input, field] of [
+      [this.el.horizon, "horizon"],
+      [this.el.stepSize, "step"],
+    ]) {
+      input.addEventListener("change", () => {
+        this.editor[field] = Math.max(1, Number(input.value) || this.editor[field]);
+        this.editor.render();
+        this.markControlledActuators();
+      });
+    }
     this.el.open.addEventListener("click", () => this.open());
     this.el.close.addEventListener("click", () => this.hide());
     this.el.scrim.addEventListener("click", () => this.hide());
@@ -30,11 +64,28 @@ export class SimulationPanel {
     });
   }
 
+  /**
+   * A control the browser refuses to submit is silent when nothing can focus it — inside a
+   * collapsed ``<details>`` it looks exactly like a dead button. Open what hides it and say so.
+   */
+  reportInvalid(control) {
+    for (let node = control.parentElement; node; node = node.parentElement) {
+      if (node instanceof HTMLDetailsElement) node.open = true;
+      if (node.hidden) node.hidden = false;
+    }
+    const label = control.closest(".handle")?.querySelector(".name")?.textContent;
+    const name = label || control.id || "A field";  //: a generated input's id is "", not null
+    this.el.error.textContent = `${name}: ${control.validationMessage}`;
+    this.el.error.hidden = false;
+    control.scrollIntoView({ block: "center" });
+  }
+
   async load() {
     try {
       this.config = await api.simulationConfig();
       this.onStatus?.("sim", "up", `${this.config.backend} · ${this.config.models.length} models`);
       this.renderForm();
+      this.ruleBuilder.configure(this.config);
     } catch (error) {
       this.onStatus?.("sim", "down", error.message);
       this.el.error.textContent = error.message;
@@ -44,10 +95,17 @@ export class SimulationPanel {
     await this.refreshRuns();
   }
 
-  open() {
+  async open() {
     this.el.drawer.hidden = false;
     this.el.scrim.hidden = false;
     this.el.drawer.querySelector("select, input")?.focus();
+    if (!this.el.replayPicker.firstChild) {
+      const picker = await pickRecordedRun(this.runsProvider(), (plan, runId) =>
+        this.loadReplay(plan, runId)
+      );
+      picker.id = "replay-run";
+      this.el.replayPicker.replaceChildren(picker);
+    }
     this.refreshRuns();
   }
 
@@ -77,7 +135,9 @@ export class SimulationPanel {
         );
         option.disabled = !runnable.has(schedule.id_short);
         return option;
-      })
+      }),
+      new Option("Copy a recorded run's actuators…", REPLAY),
+      new Option("Draw my own…", CUSTOM)
     );
     const preferred = config.operation_defaults.schedule;
     if (preferred && runnable.has(preferred)) this.el.schedule.value = preferred;
@@ -95,12 +155,40 @@ export class SimulationPanel {
   }
 
   updateScheduleHint() {
-    const schedule = this.config.schedules.find((s) => s.id_short === this.el.schedule.value);
+    const choice = this.el.schedule.value;
+    this.el.replayField.hidden = choice !== REPLAY;
+    this.el.editorField.hidden = choice !== REPLAY && choice !== CUSTOM;
+    if (choice === CUSTOM && !this.editor.rows.length) this.editor.clear();
+
+    const schedule = this.config.schedules.find((s) => s.id_short === choice);
     this.el.scheduleHint.textContent = schedule
       ? [schedule.name, schedule.row_count ? `${schedule.row_count} rows` : null]
           .filter(Boolean)
           .join(" · ")
-      : "";
+      : choice === REPLAY
+        ? "The commands the plant's actuators were given, read back from the recorded run."
+        : "Click or drag the grid; every cell is one step of the schedule.";
+  }
+
+  /** An actuator under a rule ignores the schedule, so the grid should not pretend otherwise. */
+  markControlledActuators() {
+    const controlled = new Set(this.rules.map((rule) => rule.actuator));
+    for (const label of this.el.editor.querySelectorAll(".sched-label")) {
+      const isControlled = controlled.has(label.textContent.trim());
+      label.style.textDecoration = isControlled ? "line-through" : "";
+      label.title = isControlled ? "under a control rule; the schedule is ignored" : "";
+    }
+  }
+
+  async loadReplay(plan, runId) {
+    this.replayInitialState = plan.initial_state ?? {};
+    this.editor.load(plan.rows, {
+      name: plan.name,
+      notes: plan.notes,
+      horizon: Math.min(plan.end_time_s || 120, Number(this.el.stop.value) || 120),
+    });
+    this.markControlledActuators();
+    this.el.replayHint.textContent = `${plan.rows.length} switching points from ${runId}`;
   }
 
   renderHandles() {
@@ -143,7 +231,9 @@ export class SimulationPanel {
       const number = document.createElement("input");
       number.type = "number";
       number.value = String(parameter.default ?? 0);
-      number.step = stepFor(parameter);
+      //: A model parameter is a physical quantity, not a grid: any step but "any" makes the
+      //: model's own default (0.15108 m, say) invalid and the browser then blocks the form.
+      number.step = "any";
       if (parameter.minimum !== null) number.min = String(parameter.minimum);
       if (parameter.maximum !== null) number.max = String(parameter.maximum);
       number.dataset.kind = "number";
@@ -200,12 +290,19 @@ export class SimulationPanel {
     this.el.error.hidden = true;
     this.el.submit.disabled = true;
     this.el.submit.textContent = "Starting…";
+    const choice = this.el.schedule.value;
+    const overrides = this.overrides();
+    if (choice === REPLAY && this.el.replayInitial.checked) {
+      Object.assign(overrides, this.replayInitialState);
+    }
     const payload = {
       model: this.el.model.value || undefined,
       stop_time: Number(this.el.stop.value),
       output_interval: Number(this.el.interval.value),
-      schedule: this.el.schedule.value,
-      parameter_overrides: this.overrides(),
+      schedule:
+        choice === REPLAY || choice === CUSTOM ? this.editor.toJSON() : choice,
+      parameter_overrides: overrides,
+      control_rules: this.rules,
       label: this.el.label.value.trim() || undefined,
     };
     try {
@@ -287,6 +384,13 @@ export class SimulationPanel {
           error.textContent = run.error;
           item.append(error);
         }
+        if (run.note) {
+          // Something the runner decided on the way (a retry at a tighter tolerance).
+          const note = document.createElement("span");
+          note.className = "muted small";
+          note.textContent = run.note;
+          item.append(note);
+        }
         if (run.status === "completed") {
           const open = document.createElement("button");
           open.className = "btn ghost small";
@@ -307,15 +411,14 @@ export class SimulationPanel {
   }
 }
 
+/** The slider's granularity: ~200 positions over the range, snapped to a 1/2/5 grid. */
 function stepFor(parameter) {
-  const span =
-    parameter.minimum !== null && parameter.maximum !== null
-      ? parameter.maximum - parameter.minimum
-      : Math.abs(Number(parameter.default ?? 1)) || 1;
-  if (span <= 1.001) return "0.05";
-  if (span <= 10) return "0.1";
-  if (span < 0.01) return "0.0001";
-  return "0.01";
+  const span = Math.abs(parameter.maximum - parameter.minimum);
+  if (!Number.isFinite(span) || span <= 0) return "any";
+  const raw = span / 200;
+  const magnitude = 10 ** Math.floor(Math.log10(raw));
+  const factor = [1, 2, 5, 10].find((f) => f * magnitude >= raw) ?? 10;
+  return String(Number((factor * magnitude).toPrecision(12)));
 }
 
 function modelHint(config, selected) {
